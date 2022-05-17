@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="server">
+      <UniqueIdentifier>{65f75655-d8d5-434a-bd15-e80de5a8e5b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{c313d31a-48ce-4e98-81f0-ed66396a6051}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="test\echo_server.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\stop_server.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\udp_server.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="core\async_event.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\event_loop.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\ip_address.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\packet_helpers.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\tcp_client.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\tcp_connection.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\tcp_server.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\timer.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\timer_event_loop.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\udp.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\udp_server.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="server\general_server.cpp">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="server\signal_control.cpp">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="server\timer_helpers.cpp">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\circle_buffer.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\global.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\jsoncpp_writer.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\sock_utils.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\sutil.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="core\async_event.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\event_loop.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\ip_address.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\packet_helpers.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\tcp_client.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\tcp_connection.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\tcp_server.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\timer.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\timer_event_loop.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\udp.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\udp_server.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="server\general_server.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="server\signal_control.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="server\timer_helpers.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\byte_order.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\circle_buffer.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\creator.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\global.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\jsoncpp_writer.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\memory_alloc_helper.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\ngenerator.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\ns_helper.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\object_pool.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\sock_utils.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\sutil.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\templ.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\threadqueue.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
