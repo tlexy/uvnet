@@ -155,6 +155,7 @@
     <ClCompile Include="core\udp_server.cpp" />
     <ClCompile Include="server\general_server.cpp" />
     <ClCompile Include="server\signal_control.cpp" />
+    <ClCompile Include="server\thread_timer_eventloop.cpp" />
     <ClCompile Include="server\timer_helpers.cpp" />
     <ClCompile Include="test\echo_server.cpp" />
     <ClCompile Include="test\stop_server.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="utils\jsoncpp_writer.cpp" />
     <ClCompile Include="utils\sock_utils.cpp" />
     <ClCompile Include="utils\sutil.cpp" />
+    <ClCompile Include="utils\thread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\async_event.h" />
@@ -179,6 +181,7 @@
     <ClInclude Include="core\udp_server.h" />
     <ClInclude Include="server\general_server.h" />
     <ClInclude Include="server\signal_control.h" />
+    <ClInclude Include="server\thread_timer_eventloop.h" />
     <ClInclude Include="server\timer_helpers.h" />
     <ClInclude Include="utils\byte_order.hpp" />
     <ClInclude Include="utils\circle_buffer.h" />
@@ -192,6 +195,7 @@
     <ClInclude Include="utils\sock_utils.h" />
     <ClInclude Include="utils\sutil.h" />
     <ClInclude Include="utils\templ.hpp" />
+    <ClInclude Include="utils\thread.h" />
     <ClInclude Include="utils\threadqueue.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

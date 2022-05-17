@@ -83,6 +83,12 @@
     <ClCompile Include="utils\sutil.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="server\thread_timer_eventloop.cpp">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\thread.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\async_event.h">
@@ -164,6 +170,12 @@
       <Filter>utils</Filter>
     </ClInclude>
     <ClInclude Include="utils\threadqueue.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="server\thread_timer_eventloop.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\thread.h">
       <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>
