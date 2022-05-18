@@ -3,13 +3,20 @@
 #include <thread>
 #include "event_loop.h"
 #include <iostream>
-#include "../utils/sutil.h"
+#include <chrono>
 #include "../utils/byte_order.hpp"
 #ifndef _WIN32
 #include <jemalloc/jemalloc.h>
 #endif
 
 NS_UVCORE_B
+
+int64_t getTimeStampMilli()
+{
+	std::chrono::system_clock::time_point tp = std::chrono::system_clock::now();
+	auto tt = std::chrono::duration_cast<std::chrono::milliseconds>(tp.time_since_epoch());
+	return tt.count();
+}
 
 NGenerator<int64_t> TcpConnection::_gentor;
 
@@ -22,7 +29,7 @@ TcpConnection::TcpConnection(std::shared_ptr<EventLoop> loop, uv_tcp_t* handle, 
 	_ccb(CloseCallBack()),
 	_handle_del(del)
 {
-	_create_time = SUtil::getTimeStampMilli();
+	_create_time = getTimeStampMilli();
 }
 
 void TcpConnection::calc_ip()

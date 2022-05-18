@@ -151,7 +151,6 @@
     <ClCompile Include="core\tcp_server.cpp" />
     <ClCompile Include="core\timer.cpp" />
     <ClCompile Include="core\timer_event_loop.cpp" />
-    <ClCompile Include="core\udp.cpp" />
     <ClCompile Include="core\udp_server.cpp" />
     <ClCompile Include="server\general_server.cpp" />
     <ClCompile Include="server\signal_control.cpp" />
@@ -159,9 +158,7 @@
     <ClCompile Include="server\timer_helpers.cpp" />
     <ClCompile Include="utils\circle_buffer.cpp" />
     <ClCompile Include="utils\global.cpp" />
-    <ClCompile Include="utils\jsoncpp_writer.cpp" />
     <ClCompile Include="utils\sock_utils.cpp" />
-    <ClCompile Include="utils\sutil.cpp" />
     <ClCompile Include="utils\thread.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -174,7 +171,6 @@
     <ClInclude Include="core\tcp_server.h" />
     <ClInclude Include="core\timer.h" />
     <ClInclude Include="core\timer_event_loop.h" />
-    <ClInclude Include="core\udp.h" />
     <ClInclude Include="core\udp_server.h" />
     <ClInclude Include="server\general_server.h" />
     <ClInclude Include="server\signal_control.h" />
@@ -184,14 +180,11 @@
     <ClInclude Include="utils\circle_buffer.h" />
     <ClInclude Include="utils\creator.hpp" />
     <ClInclude Include="utils\global.h" />
-    <ClInclude Include="utils\jsoncpp_writer.h" />
     <ClInclude Include="utils\memory_alloc_helper.hpp" />
     <ClInclude Include="utils\ngenerator.hpp" />
     <ClInclude Include="utils\ns_helper.h" />
     <ClInclude Include="utils\object_pool.hpp" />
     <ClInclude Include="utils\sock_utils.h" />
-    <ClInclude Include="utils\sutil.h" />
-    <ClInclude Include="utils\templ.hpp" />
     <ClInclude Include="utils\thread.h" />
     <ClInclude Include="utils\threadqueue.hpp" />
   </ItemGroup>

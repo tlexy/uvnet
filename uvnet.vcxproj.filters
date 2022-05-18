@@ -40,9 +40,6 @@
     <ClCompile Include="core\timer_event_loop.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="core\udp.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="core\udp_server.cpp">
       <Filter>core</Filter>
     </ClCompile>
@@ -61,13 +58,7 @@
     <ClCompile Include="utils\global.cpp">
       <Filter>utils</Filter>
     </ClCompile>
-    <ClCompile Include="utils\jsoncpp_writer.cpp">
-      <Filter>utils</Filter>
-    </ClCompile>
     <ClCompile Include="utils\sock_utils.cpp">
-      <Filter>utils</Filter>
-    </ClCompile>
-    <ClCompile Include="utils\sutil.cpp">
       <Filter>utils</Filter>
     </ClCompile>
     <ClCompile Include="server\thread_timer_eventloop.cpp">
@@ -105,9 +96,6 @@
     <ClInclude Include="core\timer_event_loop.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="core\udp.h">
-      <Filter>core</Filter>
-    </ClInclude>
     <ClInclude Include="core\udp_server.h">
       <Filter>core</Filter>
     </ClInclude>
@@ -132,9 +120,6 @@
     <ClInclude Include="utils\global.h">
       <Filter>utils</Filter>
     </ClInclude>
-    <ClInclude Include="utils\jsoncpp_writer.h">
-      <Filter>utils</Filter>
-    </ClInclude>
     <ClInclude Include="utils\memory_alloc_helper.hpp">
       <Filter>utils</Filter>
     </ClInclude>
@@ -148,12 +133,6 @@
       <Filter>utils</Filter>
     </ClInclude>
     <ClInclude Include="utils\sock_utils.h">
-      <Filter>utils</Filter>
-    </ClInclude>
-    <ClInclude Include="utils\sutil.h">
-      <Filter>utils</Filter>
-    </ClInclude>
-    <ClInclude Include="utils\templ.hpp">
       <Filter>utils</Filter>
     </ClInclude>
     <ClInclude Include="utils\threadqueue.hpp">

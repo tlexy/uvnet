@@ -7,10 +7,10 @@
 
 /*
 	通用数据包格式： 
-	|len(4B)|ver(2B)|padding(2B)|service_id(2B)|cmd_id(2B)|payload(len)|
+	|len(4B)|ver(2B)|padding(2B)|service_id(2B)|cmd_id(2B)|trans_id(4B)|payload(len)|
 	这里len的长度为payload的长度，不包括头部。
 	解析：
-		1. 是否足够12个字节
+		1. 是否足够16个字节
 		2. 获取payload长度
 		3. 判断是否是一个完整的包
 */
