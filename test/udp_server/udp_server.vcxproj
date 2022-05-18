@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{a066369b-465b-4ee9-b5ac-833c91e564b9}</ProjectGuid>
-    <RootNamespace>uvnet</RootNamespace>
+    <ProjectGuid>{fdd9fe0c-d7da-437a-bf72-93c33c74b3ce}</ProjectGuid>
+    <RootNamespace>udpserver</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -40,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -114,15 +114,14 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>3rd\libuv-v1.44.1\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..;..\..\3rd\libuv-v1.44.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>3rd\libuv-v1.44.1\build\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>uv_a.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\x64\Debug\uvnet.lib;..\..\3rd\libuv-v1.44.1\build\Debug\uv_a.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -142,58 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="core\async_event.cpp" />
-    <ClCompile Include="core\event_loop.cpp" />
-    <ClCompile Include="core\ip_address.cpp" />
-    <ClCompile Include="core\packet_helpers.cpp" />
-    <ClCompile Include="core\tcp_client.cpp" />
-    <ClCompile Include="core\tcp_connection.cpp" />
-    <ClCompile Include="core\tcp_server.cpp" />
-    <ClCompile Include="core\timer.cpp" />
-    <ClCompile Include="core\timer_event_loop.cpp" />
-    <ClCompile Include="core\udp.cpp" />
-    <ClCompile Include="core\udp_server.cpp" />
-    <ClCompile Include="server\general_server.cpp" />
-    <ClCompile Include="server\signal_control.cpp" />
-    <ClCompile Include="server\thread_timer_eventloop.cpp" />
-    <ClCompile Include="server\timer_helpers.cpp" />
-    <ClCompile Include="utils\circle_buffer.cpp" />
-    <ClCompile Include="utils\global.cpp" />
-    <ClCompile Include="utils\jsoncpp_writer.cpp" />
-    <ClCompile Include="utils\sock_utils.cpp" />
-    <ClCompile Include="utils\sutil.cpp" />
-    <ClCompile Include="utils\thread.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="core\async_event.h" />
-    <ClInclude Include="core\event_loop.h" />
-    <ClInclude Include="core\ip_address.h" />
-    <ClInclude Include="core\packet_helpers.h" />
-    <ClInclude Include="core\tcp_client.h" />
-    <ClInclude Include="core\tcp_connection.h" />
-    <ClInclude Include="core\tcp_server.h" />
-    <ClInclude Include="core\timer.h" />
-    <ClInclude Include="core\timer_event_loop.h" />
-    <ClInclude Include="core\udp.h" />
-    <ClInclude Include="core\udp_server.h" />
-    <ClInclude Include="server\general_server.h" />
-    <ClInclude Include="server\signal_control.h" />
-    <ClInclude Include="server\thread_timer_eventloop.h" />
-    <ClInclude Include="server\timer_helpers.h" />
-    <ClInclude Include="utils\byte_order.hpp" />
-    <ClInclude Include="utils\circle_buffer.h" />
-    <ClInclude Include="utils\creator.hpp" />
-    <ClInclude Include="utils\global.h" />
-    <ClInclude Include="utils\jsoncpp_writer.h" />
-    <ClInclude Include="utils\memory_alloc_helper.hpp" />
-    <ClInclude Include="utils\ngenerator.hpp" />
-    <ClInclude Include="utils\ns_helper.h" />
-    <ClInclude Include="utils\object_pool.hpp" />
-    <ClInclude Include="utils\sock_utils.h" />
-    <ClInclude Include="utils\sutil.h" />
-    <ClInclude Include="utils\templ.hpp" />
-    <ClInclude Include="utils\thread.h" />
-    <ClInclude Include="utils\threadqueue.hpp" />
+    <ClCompile Include="..\udp_server.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

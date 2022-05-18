@@ -5,6 +5,7 @@
 #include <signal.h>
 #include "server/general_server.h"
 #include "utils/circle_buffer.h"
+#include <unordered_map>
 
 #pragma comment (lib, "ws2_32.lib")
 #pragma comment (lib, "Iphlpapi.lib")
@@ -21,18 +22,37 @@ protected:
 	virtual void on_newconnection(std::shared_ptr<uvcore::TcpConnection> conn)
 	{
 		std::cout << "new connection here, id : " << conn->id() << std::endl;
+		_conn_map[conn->id()] = conn;
 	}
 
-	virtual void on_message(std::shared_ptr<uvcore::TcpConnection>)
-	{}
+	virtual void on_message(std::shared_ptr<uvcore::TcpConnection> ptr)
+	{
+		if (ptr->error() != 0)
+		{
+			//client read error, close the connection.
+			ptr->close();
+			return;
+		}
+		std::string recv_msg((char*)ptr->get_inner_buffer()->read_ptr(), ptr->get_inner_buffer()->readable_size());
+		std::cout << "recv: " << recv_msg.c_str() << std::endl;
+		ptr->write(recv_msg.c_str(), recv_msg.size());
 
-	virtual void on_connection_close(std::shared_ptr<uvcore::TcpConnection>)
-	{}
+		ptr->get_inner_buffer()->has_read(recv_msg.size());
+	}
+
+	virtual void on_connection_close(std::shared_ptr<uvcore::TcpConnection> ptr)
+	{
+		std::cout << "connection close." << std::endl;
+		_conn_map.erase(ptr->id());
+	}
 
 	virtual void timer_event(uvcore::Timer*)
 	{
 		std::cout << "Echo server timer" << std::endl;
 	}
+
+private:
+	std::unordered_map<int64_t, std::shared_ptr<uvcore::TcpConnection>> _conn_map;
 };
 
 void kill_signal(int signal)

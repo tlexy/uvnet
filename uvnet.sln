@@ -5,6 +5,16 @@ VisualStudioVersion = 16.0.32126.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "uvnet", "uvnet.vcxproj", "{A066369B-465B-4EE9-B5AC-833C91E564B9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{752C3C11-28CE-4F91-9F26-B84E5F4641CD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "udp_server", "test\udp_server\udp_server.vcxproj", "{FDD9FE0C-D7DA-437A-BF72-93C33C74B3CE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "send_udp_mutlithread", "test\send_udp_mutlithread\send_udp_mutlithread.vcxproj", "{364959FF-C75B-4D27-BC61-C2A922EB44A2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "echo_server", "test\echo_server\echo_server.vcxproj", "{3A5F39DB-88B5-4E7A-8D6D-03D0B148F09B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tcp_client", "test\tcp_client\tcp_client.vcxproj", "{DAB908C2-3431-4F1D-A816-D3AC56517FB2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,9 +31,47 @@ Global
 		{A066369B-465B-4EE9-B5AC-833C91E564B9}.Release|x64.Build.0 = Release|x64
 		{A066369B-465B-4EE9-B5AC-833C91E564B9}.Release|x86.ActiveCfg = Release|Win32
 		{A066369B-465B-4EE9-B5AC-833C91E564B9}.Release|x86.Build.0 = Release|Win32
+		{FDD9FE0C-D7DA-437A-BF72-93C33C74B3CE}.Debug|x64.ActiveCfg = Debug|x64
+		{FDD9FE0C-D7DA-437A-BF72-93C33C74B3CE}.Debug|x64.Build.0 = Debug|x64
+		{FDD9FE0C-D7DA-437A-BF72-93C33C74B3CE}.Debug|x86.ActiveCfg = Debug|Win32
+		{FDD9FE0C-D7DA-437A-BF72-93C33C74B3CE}.Debug|x86.Build.0 = Debug|Win32
+		{FDD9FE0C-D7DA-437A-BF72-93C33C74B3CE}.Release|x64.ActiveCfg = Release|x64
+		{FDD9FE0C-D7DA-437A-BF72-93C33C74B3CE}.Release|x64.Build.0 = Release|x64
+		{FDD9FE0C-D7DA-437A-BF72-93C33C74B3CE}.Release|x86.ActiveCfg = Release|Win32
+		{FDD9FE0C-D7DA-437A-BF72-93C33C74B3CE}.Release|x86.Build.0 = Release|Win32
+		{364959FF-C75B-4D27-BC61-C2A922EB44A2}.Debug|x64.ActiveCfg = Debug|x64
+		{364959FF-C75B-4D27-BC61-C2A922EB44A2}.Debug|x64.Build.0 = Debug|x64
+		{364959FF-C75B-4D27-BC61-C2A922EB44A2}.Debug|x86.ActiveCfg = Debug|Win32
+		{364959FF-C75B-4D27-BC61-C2A922EB44A2}.Debug|x86.Build.0 = Debug|Win32
+		{364959FF-C75B-4D27-BC61-C2A922EB44A2}.Release|x64.ActiveCfg = Release|x64
+		{364959FF-C75B-4D27-BC61-C2A922EB44A2}.Release|x64.Build.0 = Release|x64
+		{364959FF-C75B-4D27-BC61-C2A922EB44A2}.Release|x86.ActiveCfg = Release|Win32
+		{364959FF-C75B-4D27-BC61-C2A922EB44A2}.Release|x86.Build.0 = Release|Win32
+		{3A5F39DB-88B5-4E7A-8D6D-03D0B148F09B}.Debug|x64.ActiveCfg = Debug|x64
+		{3A5F39DB-88B5-4E7A-8D6D-03D0B148F09B}.Debug|x64.Build.0 = Debug|x64
+		{3A5F39DB-88B5-4E7A-8D6D-03D0B148F09B}.Debug|x86.ActiveCfg = Debug|Win32
+		{3A5F39DB-88B5-4E7A-8D6D-03D0B148F09B}.Debug|x86.Build.0 = Debug|Win32
+		{3A5F39DB-88B5-4E7A-8D6D-03D0B148F09B}.Release|x64.ActiveCfg = Release|x64
+		{3A5F39DB-88B5-4E7A-8D6D-03D0B148F09B}.Release|x64.Build.0 = Release|x64
+		{3A5F39DB-88B5-4E7A-8D6D-03D0B148F09B}.Release|x86.ActiveCfg = Release|Win32
+		{3A5F39DB-88B5-4E7A-8D6D-03D0B148F09B}.Release|x86.Build.0 = Release|Win32
+		{DAB908C2-3431-4F1D-A816-D3AC56517FB2}.Debug|x64.ActiveCfg = Debug|x64
+		{DAB908C2-3431-4F1D-A816-D3AC56517FB2}.Debug|x64.Build.0 = Debug|x64
+		{DAB908C2-3431-4F1D-A816-D3AC56517FB2}.Debug|x86.ActiveCfg = Debug|Win32
+		{DAB908C2-3431-4F1D-A816-D3AC56517FB2}.Debug|x86.Build.0 = Debug|Win32
+		{DAB908C2-3431-4F1D-A816-D3AC56517FB2}.Release|x64.ActiveCfg = Release|x64
+		{DAB908C2-3431-4F1D-A816-D3AC56517FB2}.Release|x64.Build.0 = Release|x64
+		{DAB908C2-3431-4F1D-A816-D3AC56517FB2}.Release|x86.ActiveCfg = Release|Win32
+		{DAB908C2-3431-4F1D-A816-D3AC56517FB2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FDD9FE0C-D7DA-437A-BF72-93C33C74B3CE} = {752C3C11-28CE-4F91-9F26-B84E5F4641CD}
+		{364959FF-C75B-4D27-BC61-C2A922EB44A2} = {752C3C11-28CE-4F91-9F26-B84E5F4641CD}
+		{3A5F39DB-88B5-4E7A-8D6D-03D0B148F09B} = {752C3C11-28CE-4F91-9F26-B84E5F4641CD}
+		{DAB908C2-3431-4F1D-A816-D3AC56517FB2} = {752C3C11-28CE-4F91-9F26-B84E5F4641CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {420048E2-07E8-4EB9-A535-7CBF6B30F090}
