@@ -35,7 +35,9 @@ public:
 	{
 		if (status == 0)
 		{
+			std::string hello("hello, uvnet");
 			std::cout << "connected." << std::endl;
+			ptr->write(hello.c_str(), hello.size());
 		}
 		else
 		{
