@@ -151,6 +151,7 @@
     <ClCompile Include="core\tcp_server.cpp" />
     <ClCompile Include="core\timer.cpp" />
     <ClCompile Include="core\timer_event_loop.cpp" />
+    <ClCompile Include="core\udp.cpp" />
     <ClCompile Include="core\udp_server.cpp" />
     <ClCompile Include="server\general_server.cpp" />
     <ClCompile Include="server\signal_control.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="core\tcp_server.h" />
     <ClInclude Include="core\timer.h" />
     <ClInclude Include="core\timer_event_loop.h" />
+    <ClInclude Include="core\udp.h" />
     <ClInclude Include="core\udp_server.h" />
     <ClInclude Include="server\general_server.h" />
     <ClInclude Include="server\signal_control.h" />

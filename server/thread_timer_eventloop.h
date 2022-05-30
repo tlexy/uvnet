@@ -2,7 +2,7 @@
 #define UVCORE_THREAD_TIMER_EVENT_LOOP
 
 #include "../core/timer_event_loop.h"
-#include "utils/thread.h"
+#include "../utils/thread.h"
 
 NS_UVCORE_B
 

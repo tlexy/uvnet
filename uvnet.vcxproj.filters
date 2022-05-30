@@ -67,6 +67,9 @@
     <ClCompile Include="utils\thread.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="core\udp.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\async_event.h">
@@ -143,6 +146,9 @@
     </ClInclude>
     <ClInclude Include="utils\thread.h">
       <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="core\udp.h">
+      <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
