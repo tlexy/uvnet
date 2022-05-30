@@ -20,7 +20,7 @@ extern "C"
 		if (nread <= 0)
 		{
 			// < 0 if a transmission error was detected
-			std::cout << "receive udp data error, read: " << nread << "\tflag: " << flags << std::endl;
+			//std::cout << "receive udp data error, read: " << nread << "\tflag: " << flags << std::endl;
 			return;
 		}
 		udp->get_inner_buffer()->has_written(nread);
