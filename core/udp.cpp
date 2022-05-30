@@ -85,6 +85,9 @@ int64_t Udp::id() const
 
 void Udp::setLoop(EventLoop* loop)
 {
+#ifdef ENABLE_UDP_MULTITHREAD
+	std::lock_guard<std::mutex> lock(_mutex);
+#endif
 	_loop = loop;
 	uv_udp_init(loop->uv_loop(), _send_udp);
 	uv_udp_init(loop->uv_loop(), _recv_udp);
@@ -179,10 +182,15 @@ void Udp::send(const char* data, int len, IpAddress& ip)
 
 void Udp::sendInLoop2(const char* data, int len, IpAddress& ip)
 {
-	if (!_loop)
+#ifdef ENABLE_UDP_MULTITHREAD
 	{
-		return;
+		std::lock_guard<std::mutex> lock(_mutex);
+		if (!_loop)
+		{
+			return;
+		}
 	}
+#endif
 	if (_loop->isRunInLoopThread())
 	{
 		send2(data, len, ip);

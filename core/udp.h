@@ -7,6 +7,7 @@
 #include "../utils/circle_buffer.h"
 #include <functional>
 #include "../utils/ngenerator.hpp"
+#include <mutex>
 
 //NS_UVCORE_B
 //class Udp;
@@ -14,6 +15,8 @@
 //
 //using UdpReceiveCallback2 = std::function<void(uvcore::Udp*, const struct sockaddr*)>;
 //using UdpCloseCallback = std::function<void(int64_t)>;
+
+#define ENABLE_UDP_MULTITHREAD
 
 NS_UVCORE_B
 
@@ -78,6 +81,9 @@ private:
 	UdpCloseCallback _close_cb;
 
 	static NGenerator<int64_t> _gentor;
+#ifdef ENABLE_UDP_MULTITHREAD
+	std::mutex _mutex;
+#endif
 };
 
 NS_UVCORE_E
