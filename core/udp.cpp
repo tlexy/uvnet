@@ -155,6 +155,10 @@ udp_send_t* Udp::get_send_req(const char* data, int len)
 
 void Udp::sendInLoop(const char* data, int len, IpAddress& ip)
 {
+	if (!_loop)
+	{
+		return;
+	}
 	if (_loop->isRunInLoopThread())
 	{
 		sendInLoop(data, len, ip);
@@ -175,6 +179,10 @@ void Udp::send(const char* data, int len, IpAddress& ip)
 
 void Udp::sendInLoop2(const char* data, int len, IpAddress& ip)
 {
+	if (!_loop)
+	{
+		return;
+	}
 	if (_loop->isRunInLoopThread())
 	{
 		send2(data, len, ip);

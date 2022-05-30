@@ -69,7 +69,7 @@ private:
 
 private:
 	int64_t _id;
-	EventLoop* _loop;
+	EventLoop* _loop{nullptr};
 	uv_udp_t* _send_udp{NULL};
 	uv_udp_t* _recv_udp{NULL};
 	IpAddress _bind_addr;
