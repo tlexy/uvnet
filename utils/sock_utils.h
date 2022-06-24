@@ -36,6 +36,7 @@ namespace sockets
 
 	///上层API
 	int ConnectTcp(const char* ip_str, int port, int timeout = 0);
+	int SendUdpData(int fd, const char* ip_str, int port, const char* data, int len);
 
 }
 #endif

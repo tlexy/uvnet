@@ -329,4 +329,17 @@ namespace sockets
 		memcpy(p + sizeof(nsuf), &npre, sizeof(npre));
 		return ret;
 	}
+
+	int SendUdpData(int fd, const char* ip_str, int port, const char* data, int len)
+	{
+		struct sockaddr_in sin;
+		memset(&sin, 0x0, sizeof(sin));
+
+		sin.sin_family = AF_INET;
+		sin.sin_port = htons(port); //网络字节序的端口号
+		sin.sin_addr.s_addr = inet_addr(ip_str);
+
+		int ret = sendto(fd, data, len, 0, (struct sockaddr*)&sin, sizeof(sin));
+		return len;
+	}
 }
