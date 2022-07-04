@@ -4,7 +4,7 @@
 
 NS_UVCORE_B
 
-#define PACKET_HEADER_LEN 16
+//#define PACKET_HEADER_LEN 16
 
 int PacketHelpers::unpacket_test(const uint8_t* data, int len)
 {
@@ -38,6 +38,22 @@ int PacketHelpers::unpack(packet_t& packet, std::string& payload, const uint8_t*
 	packet.trans_id = sockets::networkToHost32(packet.trans_id);
 
 	payload = std::string((const char*)(data + PACKET_HEADER_LEN), payload_len);
+	return payload_len;
+}
+
+int PacketHelpers::unpack(packet_t& packet, const uint8_t* data, int len)
+{
+	int payload_len = unpacket_test(data, len);
+	if (payload_len < 0)
+	{
+		return -1;
+	}
+	packet = *(packet_t*)(data + 4);
+	packet.version = sockets::networkToHost16(packet.version);
+	packet.padding = sockets::networkToHost16(packet.padding);
+	packet.service_id = sockets::networkToHost16(packet.service_id);
+	packet.cmd_id = sockets::networkToHost16(packet.cmd_id);
+	packet.trans_id = sockets::networkToHost32(packet.trans_id);
 	return payload_len;
 }
 

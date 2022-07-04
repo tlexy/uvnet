@@ -3,7 +3,6 @@
 #include <thread>
 #include "event_loop.h"
 #include <iostream>
-#include <chrono>
 #include "../utils/byte_order.hpp"
 #ifndef _WIN32
 #include <jemalloc/jemalloc.h>
@@ -102,6 +101,11 @@ void TcpConnection::has_written(size_t len)
 	_buffer.has_written(len);
 }
 
+std::shared_ptr<EventLoop> TcpConnection::loop()
+{
+	return _loop_ptr;
+}
+
 void TcpConnection::on_receive_data(size_t len)
 {
 	if (_is_close)
@@ -132,13 +136,17 @@ int TcpConnection::write(const char* data, int len)
 	{
 		return -1;
 	}
-	if (_is_close || _error  != 0)
-	{
-		return 3;
-	}
 	if (!_loop_ptr->isRunInLoopThread())
 	{
 		return 1;
+	}
+	if (_is_close || _error != 0)
+	{
+		return 3;
+	}
+	if (uv_is_closing((uv_handle_t*)_handle) || id() < 1)
+	{
+		return 3;
 	}
 	WriteReq* req = new WriteReq;
 	req->req.data = this;
@@ -155,6 +163,7 @@ int TcpConnection::write(const char* data, int len)
 
 int TcpConnection::async_write(WriteReq* req)
 {
+	++_write_msg_count;
 	if (!_is_close && _error == 0)
 	{
 		uv_write((uv_write_t*)req, (uv_stream_t*)_handle, &req->buf, 1, TcpConnection::write_cb);
@@ -194,13 +203,17 @@ int TcpConnection::writeInLoop(const char* data, int len)
 
 void TcpConnection::write_cb(uv_write_t* preq, int status)
 {
+	//std::cout << "write status: " << status << std::endl;
 	WriteReq* ireq = (WriteReq*)preq;
 	free(ireq->buf.base);
-
 	TcpConnection* conn = (TcpConnection*)ireq->req.data;
-	if (conn && conn->_del_after_write)
+	if (conn)
 	{
-		conn->close();
+		--conn->_write_msg_count;
+		if (conn->_del_after_write && conn->_write_msg_count < 1)
+		{
+			conn->close();
+		}
 	}
 	delete ireq;
 }
@@ -212,11 +225,13 @@ void TcpConnection::del_after_write()
 
 void TcpConnection::on_close()
 {
+	_gentor.recyle(id());
 	if (_ccb)
 	{
 		_ccb(shared_from_this());
 	}
-	_gentor.recyle(id());
+	//_gentor.recyle(id());
+	//_connid = -1;//id设置为无效
 }
 
 bool TcpConnection::del_handle() const
@@ -226,6 +241,7 @@ bool TcpConnection::del_handle() const
 
 void TcpConnection::close()
 {
+	std::cout << "close TcpConnection: id : " << id() << std::endl;
 	if (_is_close)
 	{
 		return;
@@ -233,6 +249,10 @@ void TcpConnection::close()
 	
 	if (_loop_ptr->isRunInLoopThread())
 	{
+		if (_is_close)
+		{
+			return;
+		}
 		_is_close = true;
 		if (uv_is_active((uv_handle_t*)_handle))
 		{

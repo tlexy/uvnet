@@ -55,6 +55,7 @@ std::string IpAddress::toString(bool withPort) const
 		return std::string();
 	}
 	char buf[IPV4_LEN];
+	memset(buf, 0x0, sizeof(buf));
 	inet_ntop(AF_INET, (void*)&_addr.addr_ip4.sin_addr.s_addr, (char*)&buf, IPV4_LEN);
 	std::string ip((const char*)&buf);	
 	if (withPort)

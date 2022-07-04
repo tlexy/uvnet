@@ -20,6 +20,10 @@ extern "C"
 		if (nread <= 0)
 		{
 			// < 0 if a transmission error was detected
+			if (nread < 0)
+			{
+				udp->stopRecv();
+			}
 			//std::cout << "receive udp data error, read: " << nread << "\tflag: " << flags << std::endl;
 			return;
 		}
@@ -85,9 +89,6 @@ int64_t Udp::id() const
 
 void Udp::setLoop(EventLoop* loop)
 {
-#ifdef ENABLE_UDP_MULTITHREAD
-	std::lock_guard<std::mutex> lock(_mutex);
-#endif
 	_loop = loop;
 	uv_udp_init(loop->uv_loop(), _send_udp);
 	uv_udp_init(loop->uv_loop(), _recv_udp);
@@ -158,10 +159,6 @@ udp_send_t* Udp::get_send_req(const char* data, int len)
 
 void Udp::sendInLoop(const char* data, int len, IpAddress& ip)
 {
-	if (!_loop)
-	{
-		return;
-	}
 	if (_loop->isRunInLoopThread())
 	{
 		sendInLoop(data, len, ip);
@@ -182,15 +179,6 @@ void Udp::send(const char* data, int len, IpAddress& ip)
 
 void Udp::sendInLoop2(const char* data, int len, IpAddress& ip)
 {
-#ifdef ENABLE_UDP_MULTITHREAD
-	{
-		std::lock_guard<std::mutex> lock(_mutex);
-		if (!_loop)
-		{
-			return;
-		}
-	}
-#endif
 	if (_loop->isRunInLoopThread())
 	{
 		send2(data, len, ip);
@@ -297,12 +285,20 @@ void Udp::onCompleted(int flag)
 	}
 }
 
+void Udp::stopRecv()
+{
+	if (uv_is_active((uv_handle_t*)_recv_udp))
+	{
+		uv_udp_recv_stop(_recv_udp);
+	}
+}
+
 void Udp::do_close()
 {
-	if (uv_is_active((uv_handle_t*)_send_udp))
+	/*if (uv_is_active((uv_handle_t*)_send_udp))
 	{
 		uv_udp_recv_stop(_send_udp);
-	}
+	}*/
 	if (uv_is_closing((uv_handle_t*)_send_udp) == 0)
 	{
 		::uv_close((uv_handle_t*)_send_udp, [](uv_handle_t* handle)

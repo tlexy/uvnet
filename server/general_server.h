@@ -11,6 +11,7 @@ NS_UVCORE_B
 class TcpServer;
 class TcpConnection;
 class EventLoop;
+class Dispatcher;
 class Timer;
 
 class GeneralServer
@@ -21,6 +22,7 @@ public:
 	void async_io_start(const std::string& ip, int port);
 	void stop_io_server();
 
+	void setDispatcher(std::shared_ptr<Dispatcher>);
 	//需要在loop启动前调用
 	void start_timer(int64_t millsec);
 
@@ -45,7 +47,8 @@ protected:
 	std::shared_ptr<uvcore::EventLoop> _loop;
 	std::shared_ptr<std::thread> _io_thread;
 
-	std::shared_ptr<Timer> _timer;
+	std::shared_ptr<Dispatcher> _dispatcher;
+	std::shared_ptr<Timer> _timer{nullptr};
 };
 
 NS_UVCORE_E

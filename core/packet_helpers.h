@@ -7,10 +7,10 @@
 
 /*
 	通用数据包格式： 
-	|len(4B)|ver(2B)|padding(2B)|service_id(2B)|cmd_id(2B)|trans_id(4B)|payload(len)|
+	|len(4B)|ver(2B)|padding(2B)|service_id(2B)|cmd_id(2B)|payload(len)|
 	这里len的长度为payload的长度，不包括头部。
 	解析：
-		1. 是否足够16个字节
+		1. 是否足够12个字节
 		2. 获取payload长度
 		3. 判断是否是一个完整的包
 */
@@ -31,10 +31,13 @@ typedef struct
 
 #pragma pack(pop)
 
+#define PACKET_HEADER_LEN 16
+
 class PacketHelpers
 {
 public:
 	static int unpacket_test(const uint8_t*, int len);
+	static int unpack(packet_t& packet, const uint8_t* data, int len);
 	static int unpack(packet_t& packet, std::string& payload, const uint8_t* data, int len);
 	static int unpack(packet_t& packet, uint8_t* dest, int dest_len, const uint8_t* data, int len);
 	static void pack(int service_id, int cmd_id, const std::string&, std::string&, uint32_t trans_id = 0, uint16_t ver = 0, uint16_t pad = 0);

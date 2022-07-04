@@ -39,7 +39,7 @@ public:
 	void set_doname(const std::string& doname);
 	void update_addr();
 
-	bool operator()() const { return _valid; }
+	bool operator()() { return _valid; }
 
 private:
 	union

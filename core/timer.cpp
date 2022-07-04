@@ -54,6 +54,18 @@ void Timer::do_start()
 	}
 }
 
+void Timer::restart()
+{
+	if (_loop->isRunInLoopThread())
+	{
+		uv_timer_again(_handle);
+	}
+	else
+	{
+		std::cout << "Timer restart failed." << std::endl;
+	}
+}
+
 void Timer::reset_repeat(int64_t ms)
 {
 	_repeat = ms;
@@ -70,6 +82,11 @@ void Timer::on_close()
 
 void Timer::do_close()
 {
+	if (_is_close)
+	{
+		return;
+	}
+	_is_close = true;
 	if (uv_is_active((uv_handle_t*)_handle))
 	{
 		uv_timer_stop(_handle);
@@ -82,14 +99,29 @@ void Timer::do_close()
 			{
 				auto ptr = static_cast<Timer*>(handle->data);
 				free(handle);
-				ptr->on_close();
+				if (ptr)
+				{
+					ptr->on_close();
+				}
 			});
+	}
+}
+
+void Timer::stop()
+{
+	if (uv_is_active((uv_handle_t*)_handle))
+	{
+		uv_timer_stop(_handle);
 	}
 }
 
 void Timer::close(TimerCallback cb)
 {
 	_close_cb = cb;
+	if (!_close_cb)
+	{
+		_handle->data = nullptr;
+	}
 	if (_loop->isRunInLoopThread())
 	{
 		do_close();

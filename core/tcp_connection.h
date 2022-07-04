@@ -51,6 +51,8 @@ public:
 	void set_create_time(int64_t);
 	int64_t create_time();
 
+	std::shared_ptr<EventLoop> loop();
+
 	void has_written(size_t len);
 	void on_receive_data(size_t len);
 
@@ -89,6 +91,7 @@ private:
 	int _state{ 0 };
 	uint32_t _remote_ip{ 0 };
 	int64_t _create_time;
+	int _write_msg_count{ 0 };
 
 };
 

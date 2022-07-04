@@ -9,6 +9,7 @@ NS_UVCORE_B
 
 GeneralServer::GeneralServer()
 	:_io_thread(std::shared_ptr<std::thread>()),
+	_dispatcher(std::shared_ptr< Dispatcher>()),
 	_timer(std::shared_ptr<Timer>())
 {
 	_loop = std::make_shared<uvcore::EventLoop>();
@@ -81,6 +82,20 @@ void GeneralServer::on_connection_close_(std::shared_ptr<uvcore::TcpConnection> 
 void GeneralServer::timer_event_(Timer* timer)
 {
 	timer_event(timer);
+}
+
+//void GeneralServer::on_newconnection(std::shared_ptr<uvcore::TcpConnection>)
+//{}
+//
+//void GeneralServer::on_message(std::shared_ptr<uvcore::TcpConnection>)
+//{}
+//
+//void GeneralServer::on_connection_close(std::shared_ptr<uvcore::TcpConnection>)
+//{}
+
+void GeneralServer::setDispatcher(std::shared_ptr<Dispatcher> disp)
+{
+	_dispatcher = disp;
 }
 
 NS_UVCORE_E

@@ -55,7 +55,7 @@ int main()
 	ip.setIp(std::string("127.0.0.1"));
 	auto client = std::make_shared<ATcpClient>(loop, ip);
 	client->pre_connect(std::bind(&ATcpClient::on_connected, client.get(), std::placeholders::_1, std::placeholders::_2));
-
+	//client->set_connect_timeout(100);
 	loop->start_timer();
 	loop->run();
 

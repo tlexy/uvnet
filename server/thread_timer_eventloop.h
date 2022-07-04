@@ -2,11 +2,10 @@
 #define UVCORE_THREAD_TIMER_EVENT_LOOP
 
 #include "../core/timer_event_loop.h"
-#include "../utils/thread.h"
+#include <utils/thread.h>
 
 NS_UVCORE_B
 
-//在内部线程中运行event loop
 class ThreadTimerEventLoop : public PaThread
 {
 public:
