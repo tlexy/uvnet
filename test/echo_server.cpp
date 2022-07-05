@@ -6,6 +6,7 @@
 #include "server/general_server.h"
 #include "utils/circle_buffer.h"
 #include <unordered_map>
+#include <thread>
 
 #pragma comment (lib, "ws2_32.lib")
 #pragma comment (lib, "Iphlpapi.lib")
@@ -15,6 +16,7 @@
 class EchoServer;
 
 static std::shared_ptr<EchoServer> serptr;
+static bool gstop = false;
 
 class EchoServer : public uvcore::GeneralServer
 {
@@ -57,6 +59,7 @@ private:
 
 void kill_signal(int signal)
 {
+	gstop = true;
 	serptr->stop_io_server();
 	std::cout << "kill process signal ..." << std::endl;
 }
@@ -88,11 +91,9 @@ int main()
 	serptr = std::make_shared<EchoServer>();
 	serptr->start_timer(5000);
 	serptr->async_io_start("0.0.0.0", 3307);
-	while (true)
+	while (!gstop)
 	{
-		std::string str;
-		std::cin >> str;
-		std::cout << "input: " << str << std::endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 	
 
