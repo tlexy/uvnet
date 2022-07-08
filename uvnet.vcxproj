@@ -239,6 +239,11 @@
     <ClInclude Include="core\timer_event_loop.h" />
     <ClInclude Include="core\udp.h" />
     <ClInclude Include="core\udp_server.h" />
+    <ClInclude Include="httpparser\httprequestparser.h" />
+    <ClInclude Include="httpparser\httpresponseparser.h" />
+    <ClInclude Include="httpparser\request.h" />
+    <ClInclude Include="httpparser\response.h" />
+    <ClInclude Include="httpparser\urlparser.h" />
     <ClInclude Include="server\general_server.h" />
     <ClInclude Include="server\signal_control.h" />
     <ClInclude Include="server\thread_timer_eventloop.h" />

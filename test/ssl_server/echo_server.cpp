@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <thread>
 #include <tls/tls_config.h>
+#include <httpparser/response.h>
 
 #pragma comment (lib, "ws2_32.lib")
 #pragma comment (lib, "Iphlpapi.lib")
@@ -38,8 +39,22 @@ protected:
 		}
 		std::string recv_msg((char*)ptr->get_dec_buffer()->read_ptr(), ptr->get_dec_buffer()->readable_size());
 		std::cout << "recv: " << recv_msg.c_str() << std::endl;
-		const char* resp = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 2\r\n{}\r\n\r\n";
-		ptr->write(resp, strlen(resp));
+		//const char* resp = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 2\r\n{}\r\n\r\n";
+
+		httpparser::Response resp;
+		resp.status = "OK";
+		resp.versionMajor = 1;
+		resp.versionMinor = 1;
+		resp.keepAlive = false;
+		resp.statusCode = 200;
+		resp.headers["Connection"] = "Close";
+		resp.headers["Host"] = "wjhd.com";
+		resp.headers["Content-Type"] = "html/text";
+		resp.content = "{\"code:\", 200}";
+		resp.headers["Content-Type"] = "application/json";
+
+		std::string text = resp.inspect();
+		ptr->write(text.c_str(), text.size());
 
 		ptr->get_inner_buffer()->has_read(recv_msg.size());
 	}

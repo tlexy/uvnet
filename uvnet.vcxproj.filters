@@ -14,6 +14,9 @@
     <Filter Include="tls">
       <UniqueIdentifier>{e3fe8356-aaeb-4858-aea2-cfef9f46f926}</UniqueIdentifier>
     </Filter>
+    <Filter Include="httpparser">
+      <UniqueIdentifier>{7c7a5d09-6240-4568-a8e3-ecd2adae65b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\async_event.cpp">
@@ -176,6 +179,21 @@
     </ClInclude>
     <ClInclude Include="tls\ssl_general_server.h">
       <Filter>tls</Filter>
+    </ClInclude>
+    <ClInclude Include="httpparser\httprequestparser.h">
+      <Filter>httpparser</Filter>
+    </ClInclude>
+    <ClInclude Include="httpparser\httpresponseparser.h">
+      <Filter>httpparser</Filter>
+    </ClInclude>
+    <ClInclude Include="httpparser\request.h">
+      <Filter>httpparser</Filter>
+    </ClInclude>
+    <ClInclude Include="httpparser\response.h">
+      <Filter>httpparser</Filter>
+    </ClInclude>
+    <ClInclude Include="httpparser\urlparser.h">
+      <Filter>httpparser</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
