@@ -161,7 +161,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>3rd\libuv-v1.44.1\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>3rd\libuv-v1.44.1\include;.;3rd\OpenSSL1_1_1g_vs2015_64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -218,6 +218,10 @@
     <ClCompile Include="server\signal_control.cpp" />
     <ClCompile Include="server\thread_timer_eventloop.cpp" />
     <ClCompile Include="server\timer_helpers.cpp" />
+    <ClCompile Include="tls\ssl_connection.cpp" />
+    <ClCompile Include="tls\ssl_general_server.cpp" />
+    <ClCompile Include="tls\ssl_server.cpp" />
+    <ClCompile Include="tls\tls_config.cpp" />
     <ClCompile Include="utils\circle_buffer.cpp" />
     <ClCompile Include="utils\global.cpp" />
     <ClCompile Include="utils\sock_utils.cpp" />
@@ -239,6 +243,10 @@
     <ClInclude Include="server\signal_control.h" />
     <ClInclude Include="server\thread_timer_eventloop.h" />
     <ClInclude Include="server\timer_helpers.h" />
+    <ClInclude Include="tls\ssl_connection.h" />
+    <ClInclude Include="tls\ssl_general_server.h" />
+    <ClInclude Include="tls\ssl_server.h" />
+    <ClInclude Include="tls\tls_config.h" />
     <ClInclude Include="utils\byte_order.hpp" />
     <ClInclude Include="utils\circle_buffer.h" />
     <ClInclude Include="utils\creator.hpp" />

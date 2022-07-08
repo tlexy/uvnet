@@ -12,6 +12,8 @@
 
 NS_UVCORE_B
 
+int64_t getTimeStampMilli();
+
 using AsyncCallback = std::function<void()>;
 
 //class AsyncEvent;

@@ -4,18 +4,8 @@
 #include "event_loop.h"
 #include <iostream>
 #include "../utils/byte_order.hpp"
-#ifndef _WIN32
-#include <jemalloc/jemalloc.h>
-#endif
 
 NS_UVCORE_B
-
-int64_t getTimeStampMilli()
-{
-	std::chrono::system_clock::time_point tp = std::chrono::system_clock::now();
-	auto tt = std::chrono::duration_cast<std::chrono::milliseconds>(tp.time_since_epoch());
-	return tt.count();
-}
 
 NGenerator<int64_t> TcpConnection::_gentor;
 

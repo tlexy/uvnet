@@ -1,8 +1,7 @@
-﻿#include "tcp_server.h"
+﻿#include <tls/ssl_server.h>
 #include <iostream>
-#include "tcp_connection.h"
-//#include "../utils/creator.hpp"
-#include "event_loop.h"
+#include <tls/ssl_connection.h>
+#include <core/event_loop.h>
 
 
 #define ASSERT(expr)                                      \
@@ -21,31 +20,31 @@ NS_UVCORE_B
 
 extern "C"
 {
-	void on_new_connection(uv_stream_t* server, int status)
+	void on_new_ssl_connection(uv_stream_t* server, int status)
 	{
 		if (status < 0)
 		{
 			fprintf(stderr, "New connection error %s\n", uv_strerror(status));
 			return;
 		}
-		TcpServer* svr = (TcpServer*)server->data;
+		SslServer* svr = (SslServer*)server->data;
 		svr->accept(server);
 	}
 
-	void alloc_buffer(uv_handle_t* handle,
+	void ssl_alloc_buffer(uv_handle_t* handle,
 		size_t suggested_size,
 		uv_buf_t* buf)
 	{
-		TcpConnection* connection = (TcpConnection*)handle->data;
+		SslConnection* connection = (SslConnection*)handle->data;
 		buf->base = (char*)connection->get_buffer();
 		buf->len = connection->get_buffer_length();
 	}
 
-	void after_read(uv_stream_t* stream,
+	void ssl_after_read(uv_stream_t* stream,
 		ssize_t nread,
 		const uv_buf_t* buf)
 	{
-		TcpConnection* connection = (TcpConnection*)stream->data;
+		SslConnection* connection = (SslConnection*)stream->data;
 		if (nread > 0)
 		{
 			connection->has_written(nread);
@@ -65,10 +64,9 @@ extern "C"
 	}
 }
 
-TcpServer::TcpServer(std::shared_ptr<EventLoop> loop, const std::string& ip, int port)
+SslServer::SslServer(std::shared_ptr<EventLoop> loop, const std::string& ip, int port)
 	:_ip(ip),
 	_port(port),
-	_conn_cb(ConnectionCallBack()),
 	_loop_ptr(loop)
 {
 	//_loop = (uv_loop_t*)malloc(sizeof(uv_loop_t));
@@ -89,10 +87,10 @@ TcpServer::TcpServer(std::shared_ptr<EventLoop> loop, const std::string& ip, int
 		});*/
 }
 
-int TcpServer::start()
+int SslServer::start()
 {
 	_serv_handle.data = this;
-	int ret = uv_listen((uv_stream_t*)&_serv_handle, SOMAXCONN, on_new_connection);
+	int ret = uv_listen((uv_stream_t*)&_serv_handle, SOMAXCONN, on_new_ssl_connection);
 	if (ret != 0)
 	{
 		return ret;
@@ -111,7 +109,7 @@ int TcpServer::start()
 	_loop = NULL;*/
 }
 
-void TcpServer::stop()
+void SslServer::stop()
 {
 	/*if (_loop)
 	{
@@ -125,7 +123,7 @@ void TcpServer::stop()
 	}
 }
 
-void TcpServer::accept(uv_stream_t* server)
+void SslServer::accept(uv_stream_t* server)
 {
 	uv_tcp_t* client = (uv_tcp_t*)malloc(sizeof(uv_tcp_t));
 	if (client == NULL)
@@ -145,7 +143,7 @@ void TcpServer::accept(uv_stream_t* server)
 	auto ptr = create_connection(client);
 	client->data = ptr.get();
 
-	r = uv_read_start((uv_stream_t*)client, alloc_buffer, after_read);
+	r = uv_read_start((uv_stream_t*)client, ssl_alloc_buffer, ssl_after_read);
 	ASSERT(r == 0);
 
 	if (_conn_cb)
@@ -154,31 +152,23 @@ void TcpServer::accept(uv_stream_t* server)
 	}
 }
 
-uv_loop_t* TcpServer::loop()
+uv_loop_t* SslServer::loop()
 {
 	return _loop_ptr->uv_loop();
 }
 
-std::shared_ptr<TcpConnection> TcpServer::create_connection(uv_tcp_t* handle)
+std::shared_ptr<SslConnection> SslServer::create_connection(uv_tcp_t* handle)
 {
 	if (!handle)
 	{
 		return NULL;
 	}
-	std::shared_ptr<TcpConnection> ptr = std::make_shared<TcpConnection>(_loop_ptr, handle); //Creator<TcpConnection>::create(_loop_ptr, handle, session_id);
-	ptr->calc_ip();
-	//_session_map[session_id] = ptr;
+	std::shared_ptr<SslConnection> ptr = std::make_shared<SslConnection>(_loop_ptr, handle, true); 
 	return ptr;
 }
 
-void TcpServer::on_newconnection(ConnectionCallBack cb)
+void SslServer::on_newconnection(SslConnectionCallBack cb)
 {
 	_conn_cb = cb;
 }
-
-std::shared_ptr<TcpConnection> TcpServer::find_connection(int64_t connid)
-{
-	return std::shared_ptr<TcpConnection>();
-}
-
 NS_UVCORE_E

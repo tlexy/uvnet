@@ -11,6 +11,9 @@
     <Filter Include="utils">
       <UniqueIdentifier>{c313d31a-48ce-4e98-81f0-ed66396a6051}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tls">
+      <UniqueIdentifier>{e3fe8356-aaeb-4858-aea2-cfef9f46f926}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\async_event.cpp">
@@ -69,6 +72,18 @@
     </ClCompile>
     <ClCompile Include="core\udp.cpp">
       <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="tls\tls_config.cpp">
+      <Filter>tls</Filter>
+    </ClCompile>
+    <ClCompile Include="tls\ssl_connection.cpp">
+      <Filter>tls</Filter>
+    </ClCompile>
+    <ClCompile Include="tls\ssl_server.cpp">
+      <Filter>tls</Filter>
+    </ClCompile>
+    <ClCompile Include="tls\ssl_general_server.cpp">
+      <Filter>tls</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +164,18 @@
     </ClInclude>
     <ClInclude Include="core\udp.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="tls\tls_config.h">
+      <Filter>tls</Filter>
+    </ClInclude>
+    <ClInclude Include="tls\ssl_connection.h">
+      <Filter>tls</Filter>
+    </ClInclude>
+    <ClInclude Include="tls\ssl_server.h">
+      <Filter>tls</Filter>
+    </ClInclude>
+    <ClInclude Include="tls\ssl_general_server.h">
+      <Filter>tls</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
