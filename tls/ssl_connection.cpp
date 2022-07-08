@@ -309,7 +309,26 @@ int SslConnection::async_write(WriteReq* req)
 	++_write_msg_count;
 	if (!_is_close && _error == 0)
 	{
-		uv_write((uv_write_t*)req, (uv_stream_t*)_handle, &req->buf, 1, SslConnection::write_cb);
+		int n = SSL_write(_ssl, req->buf.base, req->buf.len);
+		SSLStatus status = get_ssl_status(n);
+		if (n > 0)
+		{
+			do {
+				_raw_write_buffer.enable_size(req->buf.len);
+				n = BIO_read(_write_bio, _raw_write_buffer.write_ptr(), _raw_write_buffer.writable_size());
+				if (n > 0)
+				{
+					_raw_write_buffer.has_written(n);
+				}
+			} while (n > 0);
+		}
+		if (status == SSLSTATUS_FAIL)
+		{
+			return -1;
+		}
+		//uv_write((uv_write_t*)req, (uv_stream_t*)_handle, &req->buf, 1, SslConnection::write_cb);
+		write_socket((const char*)_raw_write_buffer.read_ptr(), _raw_write_buffer.readable_size());
+		_raw_write_buffer.reset();
 	}
 	return 0;
 }
