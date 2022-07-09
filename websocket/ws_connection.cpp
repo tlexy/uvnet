@@ -3,6 +3,7 @@
 #include <iostream>
 #include <httpparser/request.h>
 #include <httpparser/httprequestparser.h>
+#include <httpparser/response.h>
 #include <utils/endec.h>
 
 NS_UVCORE_B
@@ -78,6 +79,23 @@ void WsConnection::do_handshake()
 		}
 		std::string key = get_header_string(request, "Sec-WebSocket-Key");
 		std::string text = key + magic_code;
+		std::string sha = sha1(text);
+		std::string val = base64Encode(sha.c_str(), sha.size());
+
+		httpparser::Response resp;
+		resp.status = "Switching Protocols";
+		resp.versionMajor = 1;
+		resp.versionMinor = 1;
+		resp.keepAlive = true;
+		resp.statusCode = 101;
+		resp.headers["Upgrade"] = "websocket";
+		resp.headers["Connection"] = "Upgrade";
+		resp.headers["Sec-WebSocket-Accept"] = val;
+
+		std::string resp_text = resp.inspect();
+		TcpConnection::write(resp_text.c_str(), resp_text.size());
+
+		_is_handshake = true;
 	}
 	else if (res == HttpRequestParser::ParsingError)
 	{
@@ -90,7 +108,9 @@ void WsConnection::do_handshake()
 }
 
 void WsConnection::handle_ws_data_frame()
-{}
+{
+	int a = 1;
+}
 
 int WsConnection::write(const char* data, int len)
 {
