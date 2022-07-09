@@ -92,7 +92,7 @@ void WsConnection::do_handshake()
 		resp.headers["Connection"] = "Upgrade";
 		resp.headers["Sec-WebSocket-Accept"] = val;
 
-		std::string resp_text = resp.inspect();
+		std::string resp_text = resp.inspect2();
 		TcpConnection::write(resp_text.c_str(), resp_text.size());
 
 		_is_handshake = true;

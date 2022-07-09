@@ -51,6 +51,20 @@ struct Response {
         stream << content << "\r\n";
         return stream.str();
     }
+    std::string inspect2() const
+    {
+        std::stringstream stream;
+        stream << "HTTP/" << versionMajor << "." << versionMinor
+            << " " << statusCode << " " << status << "\r\n";
+
+        for (auto it = headers.begin();
+            it != headers.end(); ++it)
+        {
+            stream << it->first << ": " << it->second << "\r\n";
+        }
+        stream <<"\r\n";
+        return stream.str();
+    }
 };
 
 } // namespace httpparser
