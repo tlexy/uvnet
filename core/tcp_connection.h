@@ -16,7 +16,7 @@ struct WriteReq
 	uv_buf_t buf;
 };
 
-class Packer;
+//class Packer;
 class TcpConnection;
 class EventLoop;
 
