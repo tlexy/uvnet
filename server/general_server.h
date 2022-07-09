@@ -5,10 +5,11 @@
 #include <memory>
 #include <string>
 #include <thread>
+#include <core/net_server.hpp>
 
 NS_UVCORE_B
 
-class TcpServer;
+//class TcpServer;
 class TcpConnection;
 class EventLoop;
 class Timer;
@@ -16,6 +17,7 @@ class Timer;
 class GeneralServer
 {
 public:
+	using Server = uvcore::NetServer<uvcore::TcpConnection>;
 	GeneralServer();
 
 	void async_io_start(const std::string& ip, int port);
@@ -40,7 +42,8 @@ protected:
 	virtual void timer_event(uvcore::Timer*);
 
 protected:
-	std::shared_ptr<uvcore::TcpServer> _server;
+	//std::shared_ptr<uvcore::TcpServer> _server;
+	std::shared_ptr<Server> _server;
 	std::shared_ptr<uvcore::EventLoop> _loop;
 	std::shared_ptr<std::thread> _io_thread;
 

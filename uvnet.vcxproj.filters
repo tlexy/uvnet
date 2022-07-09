@@ -17,6 +17,9 @@
     <Filter Include="httpparser">
       <UniqueIdentifier>{7c7a5d09-6240-4568-a8e3-ecd2adae65b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="websocket">
+      <UniqueIdentifier>{8401085a-f1cb-4d8d-83f1-28157f95f587}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\async_event.cpp">
@@ -35,9 +38,6 @@
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="core\tcp_connection.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="core\tcp_server.cpp">
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="core\timer.cpp">
@@ -82,9 +82,6 @@
     <ClCompile Include="tls\ssl_connection.cpp">
       <Filter>tls</Filter>
     </ClCompile>
-    <ClCompile Include="tls\ssl_server.cpp">
-      <Filter>tls</Filter>
-    </ClCompile>
     <ClCompile Include="tls\ssl_general_server.cpp">
       <Filter>tls</Filter>
     </ClCompile>
@@ -106,9 +103,6 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="core\tcp_connection.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="core\tcp_server.h">
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="core\timer.h">
@@ -174,9 +168,6 @@
     <ClInclude Include="tls\ssl_connection.h">
       <Filter>tls</Filter>
     </ClInclude>
-    <ClInclude Include="tls\ssl_server.h">
-      <Filter>tls</Filter>
-    </ClInclude>
     <ClInclude Include="tls\ssl_general_server.h">
       <Filter>tls</Filter>
     </ClInclude>
@@ -194,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="httpparser\urlparser.h">
       <Filter>httpparser</Filter>
+    </ClInclude>
+    <ClInclude Include="core\net_server.hpp">
+      <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

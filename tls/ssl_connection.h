@@ -33,7 +33,7 @@ public:
 	enum SSLStatus {
 		SSLSTATUS_OK, SSLSTATUS_WANT_IO, SSLSTATUS_FAIL
 	};
-	SslConnection(std::shared_ptr<EventLoop> loop, uv_tcp_t* handle, bool is_server, bool del = true);
+	SslConnection(std::shared_ptr<EventLoop> loop, uv_tcp_t* handle, bool is_server = true, bool del = true);
 	~SslConnection();
 
 	int64_t id() { return _connid; }

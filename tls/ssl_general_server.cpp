@@ -21,7 +21,8 @@ void SslGeneralServer::async_io_start(const std::string& ip, int port)
 		return;
 	}
 	/*_loop = std::make_shared<uvcore::EventLoop>();*/
-	_server = std::make_shared<uvcore::SslServer>(_loop, ip, port);
+	//_server = std::make_shared<uvcore::SslServer>(_loop, ip, port);
+	_server = std::make_shared<Server>(_loop, ip, port);
 
 	_server->on_newconnection([this](std::shared_ptr<uvcore::SslConnection> ptr) {
 		ptr->set_receive_cb(std::bind(&SslGeneralServer::on_message_, this, std::placeholders::_1));

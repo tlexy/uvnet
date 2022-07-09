@@ -21,7 +21,8 @@ void GeneralServer::async_io_start(const std::string& ip, int port)
 		return;
 	}
 	/*_loop = std::make_shared<uvcore::EventLoop>();*/
-	_server = std::make_shared<uvcore::TcpServer>(_loop, ip, port);
+	//_server = std::make_shared<uvcore::TcpServer>(_loop, ip, port);
+	_server = std::make_shared<Server>(_loop, ip, port);
 
 	_server->on_newconnection([this](std::shared_ptr<uvcore::TcpConnection> ptr) {
 		ptr->set_receive_cb(std::bind(&GeneralServer::on_message_, this, std::placeholders::_1));

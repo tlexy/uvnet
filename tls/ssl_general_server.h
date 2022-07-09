@@ -5,10 +5,11 @@
 #include <memory>
 #include <string>
 #include <thread>
+#include <core/net_server.hpp>
 
 NS_UVCORE_B
 
-class SslServer;
+//class SslServer;
 class SslConnection;
 class EventLoop;
 class Timer;
@@ -16,6 +17,7 @@ class Timer;
 class SslGeneralServer
 {
 public:
+	using Server = uvcore::NetServer<uvcore::SslConnection>;
 	SslGeneralServer();
 
 	void async_io_start(const std::string& ip, int port);
@@ -42,7 +44,8 @@ protected:
 	virtual void timer_event(uvcore::Timer*);
 
 protected:
-	std::shared_ptr<uvcore::SslServer> _server;
+	//std::shared_ptr<uvcore::SslServer> _server;
+	std::shared_ptr<Server> _server;
 	std::shared_ptr<uvcore::EventLoop> _loop;
 	std::shared_ptr<std::thread> _io_thread;
 

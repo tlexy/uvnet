@@ -209,7 +209,6 @@
     <ClCompile Include="core\packet_helpers.cpp" />
     <ClCompile Include="core\tcp_client.cpp" />
     <ClCompile Include="core\tcp_connection.cpp" />
-    <ClCompile Include="core\tcp_server.cpp" />
     <ClCompile Include="core\timer.cpp" />
     <ClCompile Include="core\timer_event_loop.cpp" />
     <ClCompile Include="core\udp.cpp" />
@@ -220,7 +219,6 @@
     <ClCompile Include="server\timer_helpers.cpp" />
     <ClCompile Include="tls\ssl_connection.cpp" />
     <ClCompile Include="tls\ssl_general_server.cpp" />
-    <ClCompile Include="tls\ssl_server.cpp" />
     <ClCompile Include="tls\tls_config.cpp" />
     <ClCompile Include="utils\circle_buffer.cpp" />
     <ClCompile Include="utils\global.cpp" />
@@ -231,10 +229,10 @@
     <ClInclude Include="core\async_event.h" />
     <ClInclude Include="core\event_loop.h" />
     <ClInclude Include="core\ip_address.h" />
+    <ClInclude Include="core\net_server.hpp" />
     <ClInclude Include="core\packet_helpers.h" />
     <ClInclude Include="core\tcp_client.h" />
     <ClInclude Include="core\tcp_connection.h" />
-    <ClInclude Include="core\tcp_server.h" />
     <ClInclude Include="core\timer.h" />
     <ClInclude Include="core\timer_event_loop.h" />
     <ClInclude Include="core\udp.h" />
@@ -250,7 +248,6 @@
     <ClInclude Include="server\timer_helpers.h" />
     <ClInclude Include="tls\ssl_connection.h" />
     <ClInclude Include="tls\ssl_general_server.h" />
-    <ClInclude Include="tls\ssl_server.h" />
     <ClInclude Include="tls\tls_config.h" />
     <ClInclude Include="utils\byte_order.hpp" />
     <ClInclude Include="utils\circle_buffer.h" />
