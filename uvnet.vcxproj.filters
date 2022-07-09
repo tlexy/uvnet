@@ -85,6 +85,15 @@
     <ClCompile Include="tls\ssl_general_server.cpp">
       <Filter>tls</Filter>
     </ClCompile>
+    <ClCompile Include="websocket\ws_connection.cpp">
+      <Filter>websocket</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\endec.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="websocket\ws_general_server.cpp">
+      <Filter>websocket</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\async_event.h">
@@ -188,6 +197,15 @@
     </ClInclude>
     <ClInclude Include="core\net_server.hpp">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="websocket\ws_connection.h">
+      <Filter>websocket</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\endec.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="websocket\ws_general_server.h">
+      <Filter>websocket</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

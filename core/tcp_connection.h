@@ -27,7 +27,7 @@ class TcpConnection : public std::enable_shared_from_this<TcpConnection>
 {
 public:
 	TcpConnection(std::shared_ptr<EventLoop> loop, uv_tcp_t* handle, bool del = true);
-	~TcpConnection();
+	virtual ~TcpConnection();
 
 	int64_t id() { return _connid; }
 
@@ -54,7 +54,7 @@ public:
 	std::shared_ptr<EventLoop> loop();
 
 	void has_written(size_t len);
-	void on_receive_data(size_t len);
+	virtual void on_receive_data(size_t len);
 
 	void set_receive_cb(DataCallBack cb);
 	void set_close_cb(CloseCallBack cb);
@@ -63,9 +63,9 @@ public:
 
 	//怎么发送数据？
 	//只能在loop线程中调用
-	int write(const char* data, int len);
+	virtual int write(const char* data, int len);
 	//可以在任意线程中调用
-	int writeInLoop(const char* data, int len);
+	virtual int writeInLoop(const char* data, int len);
 
 	void del_after_write();
 
@@ -73,10 +73,10 @@ public:
 
 	static void write_cb(uv_write_t* preq, int status);
 
-private:
+protected:
 	int async_write(WriteReq*);
 
-private:
+protected:
 	uv_tcp_t* _handle{ NULL };
 	std::shared_ptr<EventLoop> _loop_ptr;
 	int64_t _connid;

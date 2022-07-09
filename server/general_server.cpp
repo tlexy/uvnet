@@ -34,7 +34,7 @@ void GeneralServer::async_io_start(const std::string& ip, int port)
 		int ret = _server->start();
 		if (ret != 0)
 		{
-			std::cout << "[ERROR][ERROR][ERROR]server start maybe failed!!!!!!!!!!!!!!!!!!!" << __FILE__ << ": " << __FUNCTION__ << std::endl;
+			std::cerr << "[ERROR][ERROR][ERROR]server start maybe failed!!!!!!!!!!!!!!!!!!!" << __FILE__ << ": " << __FUNCTION__ << std::endl;
 		}
 	});
 }

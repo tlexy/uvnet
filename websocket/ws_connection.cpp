@@ -1,271 +1,121 @@
-﻿#include "tcp_connection.h"
-#include "../utils/global.h"
-#include <thread>
-#include "event_loop.h"
+﻿#include <websocket/ws_connection.h>
+#include <core/event_loop.h>
 #include <iostream>
-#include "../utils/byte_order.hpp"
+#include <httpparser/request.h>
+#include <httpparser/httprequestparser.h>
+#include <utils/endec.h>
 
 NS_UVCORE_B
 
-NGenerator<int64_t> TcpConnection::_gentor;
+const static std::string magic_code = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 
-TcpConnection::TcpConnection(std::shared_ptr<EventLoop> loop, uv_tcp_t* handle, bool del)
-	:_handle(handle),
-	_connid(_gentor.get_next()),
-	_loop_ptr(loop),
-	_buffer(Global::get_instance()->socket_buffer()),
-	_cb(DataCallBack()),
-	_ccb(CloseCallBack()),
-	_handle_del(del)
+WsConnection::WsConnection(std::shared_ptr<EventLoop> loop, uv_tcp_t* handle, bool del)
+	:TcpConnection(loop, handle, del)
 {
-	_create_time = getTimeStampMilli();
 }
 
-void TcpConnection::calc_ip()
+WsConnection::~WsConnection()
 {
-	//IP地址相关
-	struct sockaddr_in sock_addr_remote;
-	int sock_len = sizeof(struct sockaddr_in);
-	uv_tcp_getpeername(_handle, (struct sockaddr*)&sock_addr_remote, &sock_len);
-	_remote_ip = sock_addr_remote.sin_addr.s_addr;
-	_remote_ip = sockets::networkToHost32(_remote_ip);
 }
 
-TcpConnection::~TcpConnection()
+void WsConnection::err_close(int error)
 {
-	//std::cout << "TcpConnection dtor, id: " << id() << std::endl;
+	set_error(error);
+	TcpConnection::on_receive_data(0);
 }
 
-uint32_t TcpConnection::get_remote_ip()
+int WsConnection::get_version(std::shared_ptr<httpparser::Request> req)
 {
-	return _remote_ip;
+	std::string sv = get_header_string(req, "Sec-WebSocket-Version");
+	return std::atoi(sv.c_str());
 }
 
-void TcpConnection::set_error(int err)
+std::string WsConnection::get_header_string(std::shared_ptr<httpparser::Request> req, const std::string& key)
 {
-	_error = err;
-}
-
-int TcpConnection::error()
-{
-	return _error;
-}
-
-void TcpConnection::set_state(int st)
-{
-	_state = st;
-}
-
-int TcpConnection::state()
-{
-	return _state;
-}
-
-void TcpConnection::set_create_time(int64_t ct)
-{
-	_create_time = ct;
-}
-
-int64_t TcpConnection::create_time()
-{
-	return _create_time;
-}
-
-char* TcpConnection::get_buffer()
-{
-	return (char*)_buffer.enable_size(Global::get_instance()->packet_size());
-}
-
-uint32_t TcpConnection::get_buffer_length()
-{
-	return Global::get_instance()->packet_size();
-}
-
-CircleBuffer* TcpConnection::get_inner_buffer()
-{
-	return &_buffer;
-}
-
-void TcpConnection::has_written(size_t len)
-{
-	_buffer.has_written(len);
-}
-
-std::shared_ptr<EventLoop> TcpConnection::loop()
-{
-	return _loop_ptr;
-}
-
-void TcpConnection::on_receive_data(size_t len)
-{
-	if (_is_close)
+	for (int i = 0; i < req->headers.size(); ++i)
 	{
-		return;
+		if (req->headers[i].name == key)
+		{
+			return req->headers[i].value;
+		}
 	}
-	
-	//std::cout << "on_receive_data, cid: " << id() << std::endl;
-	if (_cb)
-	{
-		_cb(shared_from_this());
-	}
+	return std::string("");
 }
 
-void TcpConnection::set_receive_cb(DataCallBack cb)
+void WsConnection::on_receive_data(size_t len)
 {
-	_cb = cb;
-}
-
-void TcpConnection::set_close_cb(CloseCallBack cb)
-{
-	_ccb = cb;
-}
-
-int TcpConnection::write(const char* data, int len)
-{
-	if (len <= 0)
+	if (!is_handshake())
 	{
-		return -1;
-	}
-	if (!_loop_ptr->isRunInLoopThread())
-	{
-		return 1;
-	}
-	if (_is_close || _error != 0)
-	{
-		return 3;
-	}
-	if (uv_is_closing((uv_handle_t*)_handle) || id() < 1)
-	{
-		return 3;
-	}
-	WriteReq* req = new WriteReq;
-	req->req.data = this;
-	char* buf = (char*)malloc(len);
-	std::copy(data, data + len, buf);
-	if (buf == NULL)
-	{
-		return 2;//内存分配失败
-	}
-	req->buf = uv_buf_init(const_cast<char*>(buf), static_cast<unsigned int>(len));
-	uv_write((uv_write_t*)req, (uv_stream_t*)_handle, &req->buf, 1, TcpConnection::write_cb);
-	return 0;
-}
-
-int TcpConnection::async_write(WriteReq* req)
-{
-	++_write_msg_count;
-	if (!_is_close && _error == 0)
-	{
-		uv_write((uv_write_t*)req, (uv_stream_t*)_handle, &req->buf, 1, TcpConnection::write_cb);
-	}
-	return 0;
-}
-
-int TcpConnection::writeInLoop(const char* data, int len)
-{
-	if (len <= 0)
-	{
-		return -1;
-	}
-	if (_is_close)
-	{
-		return 3;
-	}
-	if (_loop_ptr->isRunInLoopThread())
-	{
-		return write(data, len);
+		do_handshake();
 	}
 	else
 	{
-		WriteReq* req = new WriteReq;
-		req->req.data = this;
-		char* buf = (char*)malloc(len);
-		if (buf == NULL)
-		{
-			return 2;//内存分配失败
-		}
-		std::copy(data, data + len, buf);
-		req->buf = uv_buf_init(const_cast<char*>(buf), static_cast<unsigned int>(len));
-		_loop_ptr->runInLoop(std::bind(&TcpConnection::async_write, this, req));
+		handle_ws_data_frame();
 	}
-	return 0;
 }
 
-void TcpConnection::write_cb(uv_write_t* preq, int status)
+void WsConnection::do_handshake()
 {
-	//std::cout << "write status: " << status << std::endl;
-	WriteReq* ireq = (WriteReq*)preq;
-	free(ireq->buf.base);
-	TcpConnection* conn = (TcpConnection*)ireq->req.data;
-	if (conn)
+	using namespace httpparser;
+
+	const char* text = reinterpret_cast<const char*>(get_inner_buffer()->read_ptr());
+	int len = get_inner_buffer()->readable_size();
+
+	auto request = std::make_shared<Request>();
+	HttpRequestParser parser;
+	HttpRequestParser::ParseResult res = parser.parse(*request, text, text + len);
+	if (res == HttpRequestParser::ParsingCompleted)
 	{
-		--conn->_write_msg_count;
-		if (conn->_del_after_write && conn->_write_msg_count < 1)
+		get_inner_buffer()->has_read(len);
+		std::cout << request->inspect() << std::endl;
+		if (request->versionMajor != 1
+			|| request->method != "GET"
+			|| get_version(request) != 13
+			|| get_header_string(request, "Connection") != std::string("Upgrade")
+			|| get_header_string(request, "Upgrade") != std::string("websocket"))
 		{
-			conn->close();
+			err_close(HandshakeError);
 		}
+		std::string key = get_header_string(request, "Sec-WebSocket-Key");
+		std::string text = key + magic_code;
 	}
-	delete ireq;
-}
-
-void TcpConnection::del_after_write()
-{
-	_del_after_write = true;
-}
-
-void TcpConnection::on_close()
-{
-	_gentor.recyle(id());
-	if (_ccb)
+	else if (res == HttpRequestParser::ParsingError)
 	{
-		_ccb(shared_from_this());
-	}
-	//_gentor.recyle(id());
-	//_connid = -1;//id设置为无效
-}
-
-bool TcpConnection::del_handle() const
-{
-	return _handle_del;
-}
-
-void TcpConnection::close()
-{
-	std::cout << "close TcpConnection: id : " << id() << std::endl;
-	if (_is_close)
-	{
-		return;
-	}
-	
-	if (_loop_ptr->isRunInLoopThread())
-	{
-		if (_is_close)
-		{
-			return;
-		}
-		_is_close = true;
-		if (uv_is_active((uv_handle_t*)_handle))
-		{
-			uv_read_stop((uv_stream_t*)_handle);
-		}
-		if (uv_is_closing((uv_handle_t*)_handle) == 0)
-		{
-			uv_close((uv_handle_t*)_handle, [](uv_handle_t* handle) {
-				TcpConnection* conn = (TcpConnection*)handle->data;
-				if (conn) {
-					if (conn->del_handle())
-					{
-						free(handle);
-					}
-					conn->on_close();
-				}
-			});
-		}
+		err_close(1);
 	}
 	else
 	{
-		_loop_ptr->runInLoop(std::bind(&TcpConnection::close, this));
+		//std::cerr << "Http wait more data for parsing." << std::endl;
 	}
 }
+
+void WsConnection::handle_ws_data_frame()
+{}
+
+int WsConnection::write(const char* data, int len)
+{
+	return 0;
+}
+
+int WsConnection::writeInLoop(const char* data, int len)
+{
+	return 0;
+}
+
+bool WsConnection::is_handshake()
+{
+	return _is_handshake;
+}
+
+void WsConnection::set_handshake_cb(HandshakeCallBack cb)
+{
+	_hcb = cb;
+}
+
+//void WsConnection::set_receive_cb(DataCallBack cb)
+//{}
+//
+//void WsConnection::set_close_cb(CloseCallBack cb)
+//{}
 
 NS_UVCORE_E

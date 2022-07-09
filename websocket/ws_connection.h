@@ -1,97 +1,61 @@
-﻿#ifndef UVCORE_TCP_CONNECTION_H
-#define UVCORE_TCP_CONNECTION_H
+﻿#ifndef UVCORE_WEBSOCKET_CONNECTION_H
+#define UVCORE_WEBSOCKET_CONNECTION_H
 
-#include "../utils/ns_helper.h"
+#include <utils/ns_helper.h>
 #include <uv.h>
-#include "../utils/circle_buffer.h"
+#include <utils/circle_buffer.h>
 #include <functional>
 #include <memory>
-#include "../utils/ngenerator.hpp"
+#include <utils/ngenerator.hpp>
+#include <core/tcp_connection.h>
+#include <string>
+
+namespace httpparser
+{
+	class Request;
+}
 
 NS_UVCORE_B
 
-struct WriteReq
-{
-	uv_write_t req;
-	uv_buf_t buf;
-};
+class WsConnection;
 
-//class Packer;
-class TcpConnection;
-class EventLoop;
-
-typedef std::function<void(std::shared_ptr<TcpConnection>)> DataCallBack;
-typedef std::function<void(std::shared_ptr<TcpConnection>)> CloseCallBack;
-
-class TcpConnection : public std::enable_shared_from_this<TcpConnection>
+class WsConnection : public TcpConnection, public std::enable_shared_from_this<WsConnection>
 {
 public:
-	TcpConnection(std::shared_ptr<EventLoop> loop, uv_tcp_t* handle, bool del = true);
-	~TcpConnection();
+	//using DataCallBack = std::function<void(std::shared_ptr<WsConnection>)>;
+	//using CloseCallBack = std::function<void(std::shared_ptr<WsConnection>)>;
+	using HandshakeCallBack = std::function<void(std::shared_ptr<WsConnection>)>;
 
-	int64_t id() { return _connid; }
+	enum ErrCode
+	{
+		HandshakeError = 2,
+		EndError
+	};
+	WsConnection(std::shared_ptr<EventLoop> loop, uv_tcp_t* handle, bool del = true);
+	~WsConnection();
 
-	void calc_ip();
+	virtual void on_receive_data(size_t len);
 
-	uint32_t get_remote_ip();
-
-	char* get_buffer();
-	uint32_t get_buffer_length();
-
-	CircleBuffer* get_inner_buffer();
-
-	bool del_handle() const;
-
-	void set_error(int);
-	int error();
-	//与上层业务相关的state
-	void set_state(int);
-	int state();
-
-	void set_create_time(int64_t);
-	int64_t create_time();
-
-	std::shared_ptr<EventLoop> loop();
-
-	void has_written(size_t len);
-	void on_receive_data(size_t len);
-
-	void set_receive_cb(DataCallBack cb);
-	void set_close_cb(CloseCallBack cb);
-
-	void close();
-
-	//怎么发送数据？
-	//只能在loop线程中调用
-	int write(const char* data, int len);
+	virtual int write(const char* data, int len);
 	//可以在任意线程中调用
-	int writeInLoop(const char* data, int len);
+	virtual int writeInLoop(const char* data, int len);
 
-	void del_after_write();
-
-	void on_close();
-
-	static void write_cb(uv_write_t* preq, int status);
-
-private:
-	int async_write(WriteReq*);
+	bool is_handshake();
+	void set_handshake_cb(HandshakeCallBack cb);
+	/*void set_receive_cb(DataCallBack cb);
+	void set_close_cb(CloseCallBack cb);*/
 
 private:
-	uv_tcp_t* _handle{ NULL };
-	std::shared_ptr<EventLoop> _loop_ptr;
-	int64_t _connid;
-	CircleBuffer _buffer;
-	DataCallBack _cb;
-	CloseCallBack _ccb;
-	bool _is_close{false};
-	bool _del_after_write{false};
-	static NGenerator<int64_t> _gentor;
-	bool _handle_del{ true };//是否在connection关闭时free uv_tcp_t的内存
-	int _error{0};
-	int _state{ 0 };
-	uint32_t _remote_ip{ 0 };
-	int64_t _create_time;
-	int _write_msg_count{ 0 };
+	void do_handshake();
+	void handle_ws_data_frame();
+	void err_close(int error);
+
+	int get_version(std::shared_ptr<httpparser::Request>);
+	std::string get_header_string(std::shared_ptr<httpparser::Request>, const std::string& key);
+
+private:
+	bool _is_handshake = false;
+	HandshakeCallBack _hcb = nullptr;
 
 };
 

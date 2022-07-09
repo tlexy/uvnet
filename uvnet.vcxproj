@@ -221,9 +221,12 @@
     <ClCompile Include="tls\ssl_general_server.cpp" />
     <ClCompile Include="tls\tls_config.cpp" />
     <ClCompile Include="utils\circle_buffer.cpp" />
+    <ClCompile Include="utils\endec.cpp" />
     <ClCompile Include="utils\global.cpp" />
     <ClCompile Include="utils\sock_utils.cpp" />
     <ClCompile Include="utils\thread.cpp" />
+    <ClCompile Include="websocket\ws_connection.cpp" />
+    <ClCompile Include="websocket\ws_general_server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\async_event.h" />
@@ -252,6 +255,7 @@
     <ClInclude Include="utils\byte_order.hpp" />
     <ClInclude Include="utils\circle_buffer.h" />
     <ClInclude Include="utils\creator.hpp" />
+    <ClInclude Include="utils\endec.h" />
     <ClInclude Include="utils\global.h" />
     <ClInclude Include="utils\memory_alloc_helper.hpp" />
     <ClInclude Include="utils\ngenerator.hpp" />
@@ -260,6 +264,8 @@
     <ClInclude Include="utils\sock_utils.h" />
     <ClInclude Include="utils\thread.h" />
     <ClInclude Include="utils\threadqueue.hpp" />
+    <ClInclude Include="websocket\ws_connection.h" />
+    <ClInclude Include="websocket\ws_general_server.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
