@@ -94,6 +94,9 @@
     <ClCompile Include="websocket\ws_general_server.cpp">
       <Filter>websocket</Filter>
     </ClCompile>
+    <ClCompile Include="websocket\websocket.cpp">
+      <Filter>websocket</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\async_event.h">
@@ -205,6 +208,9 @@
       <Filter>utils</Filter>
     </ClInclude>
     <ClInclude Include="websocket\ws_general_server.h">
+      <Filter>websocket</Filter>
+    </ClInclude>
+    <ClInclude Include="websocket\websocket.h">
       <Filter>websocket</Filter>
     </ClInclude>
   </ItemGroup>

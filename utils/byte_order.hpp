@@ -68,6 +68,13 @@ namespace sockets
 		return ret;
 	}
 
+	inline uint64_t networkToHost64(uint64_t net64)
+	{
+		uint64_t ret = 0;
+
+		return ret;
+	}
+
 	inline uint32_t hostToNetwork32(uint32_t host32)
 	{
 		return htonl(host32);

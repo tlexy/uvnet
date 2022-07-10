@@ -225,6 +225,7 @@
     <ClCompile Include="utils\global.cpp" />
     <ClCompile Include="utils\sock_utils.cpp" />
     <ClCompile Include="utils\thread.cpp" />
+    <ClCompile Include="websocket\websocket.cpp" />
     <ClCompile Include="websocket\ws_connection.cpp" />
     <ClCompile Include="websocket\ws_general_server.cpp" />
   </ItemGroup>
@@ -264,6 +265,7 @@
     <ClInclude Include="utils\sock_utils.h" />
     <ClInclude Include="utils\thread.h" />
     <ClInclude Include="utils\threadqueue.hpp" />
+    <ClInclude Include="websocket\websocket.h" />
     <ClInclude Include="websocket\ws_connection.h" />
     <ClInclude Include="websocket\ws_general_server.h" />
   </ItemGroup>
