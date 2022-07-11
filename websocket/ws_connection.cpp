@@ -167,7 +167,11 @@ void WsConnection::handle_ws_data_frame()
 
 int WsConnection::write(const char* data, int len)
 {
-	return 0;
+	int buff_len = pack_len(len);
+	char* buff = (char*)malloc(buff_len);
+	pack_and_copy(data, len, WsTextFrame, buff, buff_len);
+
+	return TcpConnection::write(buff, buff_len);
 }
 
 int WsConnection::writeInLoop(const char* data, int len)

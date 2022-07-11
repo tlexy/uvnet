@@ -41,4 +41,11 @@ ws_t* unpack(const char* src, int len);
 void free_ws(ws_t*);
 void unmask(uint8_t* data, int len, const uint8_t* mask);
 
+ws_t* pack(const char* data, int len, OpCode);
+int pack_len(ws_t*);
+int pack_len(int len);
+
+//no mask...
+bool pack_and_copy(const char* data, int len, OpCode op, void* dest, int dest_len);
+
 #endif

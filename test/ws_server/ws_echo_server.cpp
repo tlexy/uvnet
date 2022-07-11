@@ -37,7 +37,7 @@ protected:
 		}
 		std::string recv_msg((char*)ptr->get_dec_buffer()->read_ptr(), ptr->get_dec_buffer()->readable_size());
 		std::cout << "recv: " << recv_msg.c_str() << std::endl;
-		//ptr->write(recv_msg.c_str(), recv_msg.size());
+		ptr->write(recv_msg.c_str(), recv_msg.size());
 
 		ptr->get_dec_buffer()->has_read(recv_msg.size());
 	}

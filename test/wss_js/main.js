@@ -10,7 +10,7 @@ wss.onerror = function (ev) {
 }
 
 wss.onmessage = function(data){
-    console.log("Recv: " + data);
+    console.log("Recv: " + data.data);
 }
 
 wss.onclose = function (ev) {
