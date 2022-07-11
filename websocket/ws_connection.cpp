@@ -169,6 +169,10 @@ int WsConnection::write(const char* data, int len)
 {
 	int buff_len = pack_len(len);
 	char* buff = (char*)malloc(buff_len);
+	if (buff == NULL)
+	{
+		return -1;
+	}
 	pack_and_copy(data, len, WsTextFrame, buff, buff_len);
 
 	int ret = TcpConnection::write(buff, buff_len);;
@@ -194,7 +198,7 @@ int WsConnection::writeInLoop(const char* data, int len)
 		}
 		pack_and_copy(data, len, WsTextFrame, buff, buff_len);
 		req->buf = uv_buf_init(const_cast<char*>(buff), static_cast<unsigned int>(buff_len));
-		_loop_ptr->runInLoop(std::bind(&TcpConnection::async_write, this, req));
+		_loop_ptr->runInLoop(std::bind(&WsConnection::async_write, this, req));
 	}
 	return 0;
 }
