@@ -32,6 +32,9 @@ SslConnection::SslConnection(std::shared_ptr<EventLoop> loop, uv_tcp_t* handle, 
 SslConnection::~SslConnection()
 {
 	//std::cout << "TcpConnection dtor, id: " << id() << std::endl;
+	BIO_free(_read_bio);
+	BIO_free(_write_bio);
+	SSL_free(_ssl);
 }
 
 CircleBuffer* SslConnection::get_dec_buffer()
