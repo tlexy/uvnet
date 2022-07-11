@@ -171,11 +171,31 @@ int WsConnection::write(const char* data, int len)
 	char* buff = (char*)malloc(buff_len);
 	pack_and_copy(data, len, WsTextFrame, buff, buff_len);
 
-	return TcpConnection::write(buff, buff_len);
+	int ret = TcpConnection::write(buff, buff_len);;
+	free(buff);
+	return ret;
 }
 
 int WsConnection::writeInLoop(const char* data, int len)
 {
+	if (_loop_ptr->isRunInLoopThread())
+	{
+		return write(data, len);
+	}
+	else
+	{
+		WriteReq* req = new WriteReq;
+		req->req.data = this;
+		int buff_len = pack_len(len);
+		char* buff = (char*)malloc(buff_len);
+		if (buff == NULL)
+		{
+			return 2;//内存分配失败
+		}
+		pack_and_copy(data, len, WsTextFrame, buff, buff_len);
+		req->buf = uv_buf_init(const_cast<char*>(buff), static_cast<unsigned int>(buff_len));
+		_loop_ptr->runInLoop(std::bind(&TcpConnection::async_write, this, req));
+	}
 	return 0;
 }
 
