@@ -171,7 +171,7 @@ int WsConnection::write(const char* data, int len)
 	char* buff = (char*)malloc(buff_len);
 	if (buff == NULL)
 	{
-		return -1;
+		return 2;
 	}
 	pack_and_copy(data, len, WsTextFrame, buff, buff_len);
 
