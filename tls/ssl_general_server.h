@@ -28,8 +28,8 @@ public:
 	std::shared_ptr<uvcore::EventLoop> get_loop();
 
 protected:
-	void on_message_(std::shared_ptr<uvcore::SslConnection>);
-	void on_connection_close_(std::shared_ptr<uvcore::SslConnection>);
+	void on_message_(std::shared_ptr<uvcore::TcpConnection>);
+	void on_connection_close_(std::shared_ptr<uvcore::TcpConnection>);
 	void on_ssl_new_(std::shared_ptr<uvcore::SslConnection>);
 	void timer_event_(Timer*);
 	

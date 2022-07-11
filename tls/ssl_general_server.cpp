@@ -70,9 +70,10 @@ std::shared_ptr<uvcore::EventLoop> SslGeneralServer::get_loop()
 	return _loop;
 }
 
-void SslGeneralServer::on_message_(std::shared_ptr<uvcore::SslConnection> ptr)
+void SslGeneralServer::on_message_(std::shared_ptr<uvcore::TcpConnection> ptr)
 {
-	on_message(ptr);
+	auto pptr = std::dynamic_pointer_cast<uvcore::SslConnection>(ptr);
+	on_message(pptr);
 }
 
 void SslGeneralServer::on_ssl_new_(std::shared_ptr<uvcore::SslConnection> ptr)
@@ -80,9 +81,10 @@ void SslGeneralServer::on_ssl_new_(std::shared_ptr<uvcore::SslConnection> ptr)
 	on_ssl_new(ptr);
 }
 
-void SslGeneralServer::on_connection_close_(std::shared_ptr<uvcore::SslConnection> ptr)
+void SslGeneralServer::on_connection_close_(std::shared_ptr<uvcore::TcpConnection> ptr)
 {
-	on_connection_close(ptr);
+	auto pptr = std::dynamic_pointer_cast<uvcore::SslConnection>(ptr);
+	on_connection_close(pptr);
 }
 
 void SslGeneralServer::timer_event_(Timer* timer)
