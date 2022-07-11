@@ -35,11 +35,11 @@ protected:
 			ptr->close();
 			return;
 		}
-		std::string recv_msg((char*)ptr->get_inner_buffer()->read_ptr(), ptr->get_inner_buffer()->readable_size());
+		std::string recv_msg((char*)ptr->get_dec_buffer()->read_ptr(), ptr->get_dec_buffer()->readable_size());
 		std::cout << "recv: " << recv_msg.c_str() << std::endl;
-		ptr->write(recv_msg.c_str(), recv_msg.size());
+		//ptr->write(recv_msg.c_str(), recv_msg.size());
 
-		ptr->get_inner_buffer()->has_read(recv_msg.size());
+		ptr->get_dec_buffer()->has_read(recv_msg.size());
 	}
 
 	virtual void on_connection_close(std::shared_ptr<uvcore::WsConnection> ptr)
@@ -48,8 +48,20 @@ protected:
 		_conn_map.erase(ptr->id());
 	}
 
-	virtual void on_handshake_complete(std::shared_ptr<uvcore::WsConnection>)
-	{}
+	virtual void on_handshake_complete(std::shared_ptr<uvcore::WsConnection> ptr)
+	{
+		std::cout << "handle done." << std::endl;
+	}
+
+	virtual void on_websocket_ping(std::shared_ptr<uvcore::WsConnection>, const std::string&)
+	{
+		std::cout << "recv ping." << std::endl;
+	}
+
+	virtual void on_websocket_close(std::shared_ptr<uvcore::WsConnection> ptr, const std::string& text)
+	{
+		std::cout << "websocket close, text: " << text.c_str() << std::endl;
+	}
 
 	virtual void timer_event(uvcore::Timer*)
 	{

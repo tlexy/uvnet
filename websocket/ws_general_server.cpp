@@ -25,6 +25,8 @@ void WsGeneralServer::async_io_start(const std::string& ip, int port)
 		ptr->set_receive_cb(std::bind(&WsGeneralServer::on_message_, this, std::placeholders::_1));
 		ptr->set_close_cb(std::bind(&WsGeneralServer::on_connection_close_, this, std::placeholders::_1));
 		ptr->set_handshake_cb(std::bind(&WsGeneralServer::on_handshake_complete_, this, std::placeholders::_1));
+		ptr->set_ws_close_cb(std::bind(&WsGeneralServer::on_websocket_close_, this, std::placeholders::_1, std::placeholders::_2));
+		ptr->set_ws_ping_cb(std::bind(&WsGeneralServer::on_websocket_ping_, this, std::placeholders::_1, std::placeholders::_2));
 		on_newconnection(ptr);
 	});
 
@@ -77,6 +79,17 @@ void WsGeneralServer::on_connection_close_(std::shared_ptr<uvcore::TcpConnection
 {
 	auto pptr = std::dynamic_pointer_cast<uvcore::WsConnection>(ptr);
 	on_connection_close(pptr);
+}
+
+void WsGeneralServer::on_websocket_close_(std::shared_ptr<uvcore::WsConnection> ptr, const std::string& text)
+{
+	//前两个字节是错误码
+	on_websocket_close(ptr, text);
+}
+
+void WsGeneralServer::on_websocket_ping_(std::shared_ptr<uvcore::WsConnection> ptr, const std::string& text)
+{
+	on_websocket_ping(ptr, text);
 }
 
 void WsGeneralServer::on_handshake_complete_(std::shared_ptr<uvcore::WsConnection> ptr)

@@ -30,6 +30,8 @@ public:
 protected:
 	void on_message_(std::shared_ptr<uvcore::TcpConnection>);
 	void on_connection_close_(std::shared_ptr<uvcore::TcpConnection>);
+	void on_websocket_close_(std::shared_ptr<uvcore::WsConnection>, const std::string&);
+	void on_websocket_ping_(std::shared_ptr<uvcore::WsConnection>, const std::string&);
 	void on_handshake_complete_(std::shared_ptr<uvcore::WsConnection>);
 	void timer_event_(Timer*);
 	
@@ -40,6 +42,8 @@ protected:
 	virtual void on_newconnection(std::shared_ptr<uvcore::WsConnection>) = 0;
 	virtual void on_message(std::shared_ptr<uvcore::WsConnection>) = 0;
 	virtual void on_connection_close(std::shared_ptr<uvcore::WsConnection>) = 0;
+	virtual void on_websocket_close(std::shared_ptr<uvcore::WsConnection>, const std::string&) = 0;
+	virtual void on_websocket_ping(std::shared_ptr<uvcore::WsConnection>, const std::string&) = 0;
 	virtual void on_handshake_complete(std::shared_ptr<uvcore::WsConnection>) = 0;
 	virtual void timer_event(uvcore::Timer*);
 

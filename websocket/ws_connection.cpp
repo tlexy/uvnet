@@ -6,18 +6,25 @@
 #include <httpparser/response.h>
 #include <utils/endec.h>
 #include <websocket/websocket.h>
+#include <utils/global.h>
 
 NS_UVCORE_B
 
 const static std::string magic_code = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 
 WsConnection::WsConnection(std::shared_ptr<EventLoop> loop, uv_tcp_t* handle, bool del)
-	:TcpConnection(loop, handle, del)
+	:TcpConnection(loop, handle, del),
+	_dec_buffer(Global::get_instance()->socket_buffer())
 {
 }
 
 WsConnection::~WsConnection()
 {
+}
+
+CircleBuffer* WsConnection::get_dec_buffer()
+{
+	return &_dec_buffer;
 }
 
 void WsConnection::err_close(int error)
@@ -97,6 +104,10 @@ void WsConnection::do_handshake()
 		TcpConnection::write(resp_text.c_str(), resp_text.size());
 
 		_is_handshake = true;
+		if (_hcb)
+		{
+			_hcb(std::dynamic_pointer_cast<WsConnection>(shared_from_this()));
+		}
 	}
 	else if (res == HttpRequestParser::ParsingError)
 	{
@@ -110,7 +121,47 @@ void WsConnection::do_handshake()
 
 void WsConnection::handle_ws_data_frame()
 {
-	auto ws = unpack((const char*)get_inner_buffer()->read_ptr(), get_inner_buffer()->readable_size());
+	while (true)
+	{
+		auto ws = unpack((const char*)get_inner_buffer()->read_ptr(), get_inner_buffer()->readable_size());
+		if (ws == nullptr)
+		{
+			break;
+		}
+		else
+		{
+			get_inner_buffer()->has_read(ws->hdr.ext_len + ws->hdr.payload_len + 2);
+		}
+		
+		if (ws->hdr.hdr.opcode == WsTextFrame || ws->hdr.hdr.opcode == WsBinaryFrame)
+		{
+			get_dec_buffer()->write(ws->arr, ws->hdr.payload_len);
+			if (ws->hdr.hdr.fin == 1)
+			{
+				TcpConnection::on_receive_data(ws->hdr.payload_len);
+			}
+		}
+		else if (ws->hdr.hdr.opcode == WsConnectionClose)
+		{
+			if (_wsccb)
+			{
+				_wsccb(std::dynamic_pointer_cast<WsConnection>(shared_from_this()), std::string((const char*)ws->arr, ws->hdr.payload_len));
+			}
+		}
+		else if (ws->hdr.hdr.opcode == WsPing)
+		{
+			if (_wspcb)
+			{
+				_wspcb(std::dynamic_pointer_cast<WsConnection>(shared_from_this()), std::string((const char*)ws->arr, ws->hdr.payload_len));
+			}
+		}
+		else
+		{
+			std::cerr << "unsupported opcode: " << ws->hdr.hdr.opcode << std::endl;
+		}
+
+		free_ws(ws);
+	}
 	int a = 1;
 }
 
@@ -132,6 +183,16 @@ bool WsConnection::is_handshake()
 void WsConnection::set_handshake_cb(HandshakeCallBack cb)
 {
 	_hcb = cb;
+}
+
+void WsConnection::set_ws_close_cb(HandleWsCloseCallBack cb)
+{
+	_wsccb = cb;
+}
+
+void WsConnection::set_ws_ping_cb(HandlePingCallBack cb)
+{
+	_wspcb = cb;
 }
 
 //void WsConnection::set_receive_cb(DataCallBack cb)

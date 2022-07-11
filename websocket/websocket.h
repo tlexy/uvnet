@@ -3,6 +3,15 @@
 
 #include <stdint.h>
 
+enum OpCode
+{
+	WsTextFrame = 0x01,
+	WsBinaryFrame = 0x02,
+	WsConnectionClose = 0x08,
+	WsPing = 0x09,
+	WsPong = 0x10
+};
+
 typedef struct websocket_header
 {
 	uint16_t opcode : 4;
@@ -18,6 +27,7 @@ typedef struct websocket_ext_header
 {
 	ws_hdr hdr;
 	uint64_t payload_len;
+	uint8_t ext_len;
 	uint8_t mask_key[4];
 }ws_ext_hdr;
 
@@ -28,5 +38,7 @@ typedef struct
 }ws_t;
 
 ws_t* unpack(const char* src, int len);
+void free_ws(ws_t*);
+void unmask(uint8_t* data, int len, const uint8_t* mask);
 
 #endif
