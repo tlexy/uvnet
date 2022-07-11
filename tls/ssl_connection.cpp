@@ -112,6 +112,7 @@ void SslConnection::on_receive_data(size_t len)
 		n = BIO_write(_read_bio, get_inner_buffer()->read_ptr(), get_inner_buffer()->readable_size());
 		get_inner_buffer()->has_read(n);
 
+		//1. TLS handshake
 		if (!SSL_is_init_finished(_ssl))
 		{
 			if (do_ssl_handshake() == SSLSTATUS_FAIL)
@@ -135,6 +136,7 @@ void SslConnection::on_receive_data(size_t len)
 			}
 		}
 
+		//2. receive data to decencrypt
 		do {
 			_dec_buffer.enable_size(2048);
 			n = SSL_read(_ssl, _dec_buffer.write_ptr(), _dec_buffer.writable_size());
@@ -188,7 +190,7 @@ void SslConnection::set_new_ssl_cb(SslCallBack cb)
 //	return 0;
 //}
 
-int SslConnection::write(const char* data, int len)
+SslConnection::SSLStatus SslConnection::write_to_ssl(const char* data, int len)
 {
 	int n = SSL_write(_ssl, data, len);
 	SSLStatus status = get_ssl_status(n);
@@ -203,40 +205,48 @@ int SslConnection::write(const char* data, int len)
 			}
 		} while (n > 0);
 	}
+	return status;
+}
+
+int SslConnection::write(const char* data, int len)
+{
+	auto status = write_to_ssl(data, len);
 	if (status == SSLSTATUS_FAIL)
 	{
 		return -1;
 	}
 	//write_socket((const char*)_raw_write_buffer.read_ptr(), _raw_write_buffer.readable_size());
-	TcpConnection::write((const char*)_raw_write_buffer.read_ptr(), _raw_write_buffer.readable_size());
+	int ret = TcpConnection::write((const char*)_raw_write_buffer.read_ptr(), _raw_write_buffer.readable_size());
 	_raw_write_buffer.reset();
+	return ret;
 }
 
 int SslConnection::writeInLoop(const char* data, int len)
 {
-	if (len <= 0)
+	auto status = write_to_ssl(data, len);
+	if (status == SSLSTATUS_FAIL)
 	{
 		return -1;
 	}
-	if (_is_close)
-	{
-		return 3;
-	}
 	if (_loop_ptr->isRunInLoopThread())
 	{
-		return write(data, len);
+		int ret = TcpConnection::write((const char*)_raw_write_buffer.read_ptr(), _raw_write_buffer.readable_size());
+		_raw_write_buffer.reset();
+		return ret;
 	}
 	else
 	{
 		WriteReq* req = new WriteReq;
 		req->req.data = this;
-		char* buf = (char*)malloc(len);
+		int real_len = _raw_write_buffer.readable_size();
+		char* buf = (char*)malloc(real_len);
 		if (buf == NULL)
 		{
 			return 2;//内存分配失败
 		}
-		std::copy(data, data + len, buf);
-		req->buf = uv_buf_init(const_cast<char*>(buf), static_cast<unsigned int>(len));
+		memcpy(buf, _raw_write_buffer.read_ptr(), real_len);
+		_raw_write_buffer.has_read(real_len);
+		req->buf = uv_buf_init(const_cast<char*>(buf), static_cast<unsigned int>(real_len));
 		_loop_ptr->runInLoop(std::bind(&SslConnection::async_write, this, req));
 	}
 	return 0;

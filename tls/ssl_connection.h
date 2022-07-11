@@ -37,7 +37,7 @@ public:
 
 private:
 	//int write_socket(const char* data, int len);
-
+	SSLStatus write_to_ssl(const char* data, int len);
 	SSLStatus do_ssl_handshake();
 	SSLStatus get_ssl_status(int n);
 
