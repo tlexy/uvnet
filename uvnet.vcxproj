@@ -217,8 +217,11 @@
     <ClCompile Include="server\signal_control.cpp" />
     <ClCompile Include="server\thread_timer_eventloop.cpp" />
     <ClCompile Include="server\timer_helpers.cpp" />
+    <ClCompile Include="tls\sslws_general_server.cpp" />
+    <ClCompile Include="tls\ssl_channel.cpp" />
     <ClCompile Include="tls\ssl_connection.cpp" />
     <ClCompile Include="tls\ssl_general_server.cpp" />
+    <ClCompile Include="tls\ssl_ws_connection.cpp" />
     <ClCompile Include="tls\tls_config.cpp" />
     <ClCompile Include="utils\circle_buffer.cpp" />
     <ClCompile Include="utils\endec.cpp" />
@@ -250,8 +253,11 @@
     <ClInclude Include="server\signal_control.h" />
     <ClInclude Include="server\thread_timer_eventloop.h" />
     <ClInclude Include="server\timer_helpers.h" />
+    <ClInclude Include="tls\sslws_general_server.h" />
+    <ClInclude Include="tls\ssl_channel.h" />
     <ClInclude Include="tls\ssl_connection.h" />
     <ClInclude Include="tls\ssl_general_server.h" />
+    <ClInclude Include="tls\ssl_ws_connection.h" />
     <ClInclude Include="tls\tls_config.h" />
     <ClInclude Include="utils\byte_order.hpp" />
     <ClInclude Include="utils\circle_buffer.h" />

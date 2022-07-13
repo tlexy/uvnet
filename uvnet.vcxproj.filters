@@ -97,6 +97,15 @@
     <ClCompile Include="websocket\websocket.cpp">
       <Filter>websocket</Filter>
     </ClCompile>
+    <ClCompile Include="tls\ssl_channel.cpp">
+      <Filter>tls</Filter>
+    </ClCompile>
+    <ClCompile Include="tls\ssl_ws_connection.cpp">
+      <Filter>tls</Filter>
+    </ClCompile>
+    <ClCompile Include="tls\sslws_general_server.cpp">
+      <Filter>tls</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\async_event.h">
@@ -212,6 +221,15 @@
     </ClInclude>
     <ClInclude Include="websocket\websocket.h">
       <Filter>websocket</Filter>
+    </ClInclude>
+    <ClInclude Include="tls\ssl_channel.h">
+      <Filter>tls</Filter>
+    </ClInclude>
+    <ClInclude Include="tls\ssl_ws_connection.h">
+      <Filter>tls</Filter>
+    </ClInclude>
+    <ClInclude Include="tls\sslws_general_server.h">
+      <Filter>tls</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
