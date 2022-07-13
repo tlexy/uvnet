@@ -68,7 +68,7 @@ void SslWsConnection::on_receive_data(size_t len)
 			{
 				//握手时出错了
 				std::cerr << "SSLSTATUS_FAIL" << std::endl;
-				SSL_clear(_ssl);
+				//SSL_clear(_ssl);
 				close();
 				return;
 			}
@@ -135,7 +135,7 @@ void SslWsConnection::do_ws_handshake()
 		resp.headers["Sec-WebSocket-Accept"] = val;
 
 		std::string resp_text = resp.inspect2();
-		TcpConnection::write(resp_text.c_str(), resp_text.size());
+		write(resp_text.c_str(), resp_text.size());
 
 		_is_handshake = true;
 		if (_hcb)
@@ -214,6 +214,7 @@ int SslWsConnection::write(const char* data, int len)
 	{
 		return -1;
 	}
+	std::cout << "SslWsConnection::write, data len = " << _raw_write_buffer.readable_size() << ", ori_len: " << buff_len << std::endl;
 	int ret = TcpConnection::write((const char*)_raw_write_buffer.read_ptr(), _raw_write_buffer.readable_size());
 	_raw_write_buffer.reset();
 	//int ret = TcpConnection::write(buff, buff_len);;

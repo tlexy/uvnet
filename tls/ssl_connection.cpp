@@ -32,8 +32,8 @@ SslConnection::SslConnection(std::shared_ptr<EventLoop> loop, uv_tcp_t* handle, 
 SslConnection::~SslConnection()
 {
 	//std::cout << "TcpConnection dtor, id: " << id() << std::endl;
-	BIO_free(_read_bio);
-	BIO_free(_write_bio);
+	//BIO_free(_read_bio);
+	//BIO_free(_write_bio);
 	SSL_free(_ssl);
 }
 
@@ -121,7 +121,7 @@ void SslConnection::on_receive_data(size_t len)
 			if (do_ssl_handshake() == SSLSTATUS_FAIL)
 			{
 				std::cerr << "SSLSTATUS_FAIL" << std::endl;
-				SSL_clear(_ssl);
+				//SSL_clear(_ssl);
 				close();
 				return;
 			}

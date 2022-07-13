@@ -65,7 +65,7 @@ protected:
 
 	virtual void on_handshake_complete(std::shared_ptr<uvcore::SslWsConnection> ptr)
 	{
-		std::cout << "websocket handle done." << std::endl;
+		std::cout << "websocket handshake done." << std::endl;
 	}
 
 	virtual void on_websocket_ping(std::shared_ptr<uvcore::SslWsConnection>, const std::string&)

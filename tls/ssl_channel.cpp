@@ -26,9 +26,8 @@ SslChannel::SslChannel(bool is_server)
 
 SslChannel::~SslChannel()
 {
-	//std::cout << "TcpConnection dtor, id: " << id() << std::endl;
-	BIO_free(_read_bio);
-	BIO_free(_write_bio);
+	//BIO_free(_read_bio);
+	//BIO_free(_write_bio);
 	SSL_free(_ssl);
 }
 

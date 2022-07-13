@@ -25,7 +25,9 @@ public:
 	SSLStatus get_ssl_status(int n);
 
 	bool is_handshake_finished();
+	//写入未解密的数据
 	int write_to_bio(CircleBuffer*);
+	//读出已经解密的数据
 	int read_from_bio(CircleBuffer*);
 
 	virtual void write_socket(const char* data, int len) = 0;
