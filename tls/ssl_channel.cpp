@@ -48,13 +48,18 @@ int SslChannel::write_to_bio(CircleBuffer* buffer)
 
 int SslChannel::read_from_bio(CircleBuffer* buffer)
 {
-	buffer->enable_size(2048);
-	int n = SSL_read(_ssl, buffer->write_ptr(), buffer->writable_size());
-	if (n > 0)
-	{
-		buffer->has_written(n);
-	}
-	return n;
+	int n = 0;
+	int total = 0;
+	do {
+		buffer->enable_size(2048);
+		n = SSL_read(_ssl, buffer->write_ptr(), buffer->writable_size());
+		if (n > 0)
+		{
+			buffer->has_written(n);
+			total += n;
+		}
+	} while (n > 0);
+	return total;
 }
 
 SSLStatus SslChannel::write_to_ssl(const char* data, int len)
