@@ -39,7 +39,10 @@ bool SslChannel::is_handshake_finished()
 int SslChannel::write_to_bio(CircleBuffer* buffer)
 {
 	int n = BIO_write(_read_bio, buffer->read_ptr(), buffer->readable_size());
-	buffer->has_read(n);
+	if (n > 0)
+	{
+		buffer->has_read(n);
+	}
 	return n;
 }
 
@@ -47,7 +50,10 @@ int SslChannel::read_from_bio(CircleBuffer* buffer)
 {
 	buffer->enable_size(2048);
 	int n = SSL_read(_ssl, buffer->write_ptr(), buffer->writable_size());
-	buffer->has_written(n);
+	if (n > 0)
+	{
+		buffer->has_written(n);
+	}
 	return n;
 }
 

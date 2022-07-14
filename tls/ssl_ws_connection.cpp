@@ -110,7 +110,7 @@ void SslWsConnection::do_ws_handshake()
 	if (res == HttpRequestParser::ParsingCompleted)
 	{
 		get_ssl_dec_buffer()->has_read(len);
-		std::cout << request->inspect() << std::endl;
+		//std::cout << request->inspect() << std::endl;
 		if (request->versionMajor != 1
 			|| request->method != "GET"
 			|| get_version(request) != 13
@@ -213,7 +213,7 @@ int SslWsConnection::write(const char* data, int len, bool is_ws)
 		}
 		pack_and_copy(data, len, WsTextFrame, buff, buff_len);
 		ori_len = buff_len;
-		std::cout << "SslWsConnection::write， pre data len = " << _raw_write_buffer.readable_size() << std::endl;
+		//std::cout << "SslWsConnection::write， pre data len = " << _raw_write_buffer.readable_size() << std::endl;
 		status = write_to_ssl(buff, buff_len);
 		free(buff);
 	}
@@ -225,7 +225,7 @@ int SslWsConnection::write(const char* data, int len, bool is_ws)
 	{
 		return -1;
 	}
-	std::cout << "SslWsConnection::write, data len = " << _raw_write_buffer.readable_size() << ", ori_len: " << ori_len << std::endl;
+	//std::cout << "SslWsConnection::write, data len = " << _raw_write_buffer.readable_size() << ", ori_len: " << ori_len << std::endl;
 	int ret = TcpConnection::write((const char*)_raw_write_buffer.read_ptr(), _raw_write_buffer.readable_size());
 	_raw_write_buffer.reset();
 	//int ret = TcpConnection::write(buff, buff_len);;
