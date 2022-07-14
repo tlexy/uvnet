@@ -39,7 +39,8 @@ protected:
 		}
 		std::string recv_msg((char*)ptr->get_dec_buffer()->read_ptr(), ptr->get_dec_buffer()->readable_size());
 		std::cout << "recv: " << recv_msg.c_str() << std::endl;
-		httpparser::Response resp;
+		ptr->get_dec_buffer()->reset();
+		/*httpparser::Response resp;
 		resp.status = "OK";
 		resp.versionMajor = 1;
 		resp.versionMinor = 1;
@@ -49,9 +50,9 @@ protected:
 		resp.headers["Host"] = "wjhd.com";
 		resp.headers["Content-Type"] = "html/text";
 		resp.content = "{\"code:\", 200}";
-		resp.headers["Content-Type"] = "application/json";
+		resp.headers["Content-Type"] = "application/json";*/
 
-		std::string text = resp.inspect();
+		std::string text = recv_msg + "_resp";// resp.inspect();
 		ptr->write(text.c_str(), text.size());
 
 		ptr->get_inner_buffer()->has_read(recv_msg.size());

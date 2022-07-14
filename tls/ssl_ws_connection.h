@@ -40,7 +40,7 @@ public:
 
 	virtual void on_receive_data(size_t len);
 
-	virtual int write(const char* data, int len);
+	virtual int write(const char* data, int len, bool is_ws = true);
 	//可以在任意线程中调用
 	virtual int writeInLoop(const char* data, int len);
 

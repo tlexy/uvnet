@@ -64,6 +64,10 @@ SSLStatus SslChannel::write_to_ssl(const char* data, int len)
 			{
 				_raw_write_buffer.has_written(n);
 			}
+			else if (!BIO_should_retry(_write_bio))
+			{
+				return SSLSTATUS_FAIL;
+			}
 		} while (n > 0);
 	}
 	return status;

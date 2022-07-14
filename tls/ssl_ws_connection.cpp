@@ -135,7 +135,7 @@ void SslWsConnection::do_ws_handshake()
 		resp.headers["Sec-WebSocket-Accept"] = val;
 
 		std::string resp_text = resp.inspect2();
-		write(resp_text.c_str(), resp_text.size());
+		write(resp_text.c_str(), resp_text.size(), false);
 
 		_is_handshake = true;
 		if (_hcb)
@@ -199,22 +199,33 @@ void SslWsConnection::handle_ws_data_frame()
 	int a = 1;
 }
 
-int SslWsConnection::write(const char* data, int len)
+int SslWsConnection::write(const char* data, int len, bool is_ws)
 {
-	int buff_len = pack_len(len);
-	char* buff = (char*)malloc(buff_len);
-	if (buff == NULL)
+	int ori_len = len;
+	SSLStatus status;
+	if (is_ws)
 	{
-		return 2;
+		int buff_len = pack_len(len);
+		char* buff = (char*)malloc(buff_len);
+		if (buff == NULL)
+		{
+			return 2;
+		}
+		pack_and_copy(data, len, WsTextFrame, buff, buff_len);
+		ori_len = buff_len;
+		std::cout << "SslWsConnection::write， pre data len = " << _raw_write_buffer.readable_size() << std::endl;
+		status = write_to_ssl(buff, buff_len);
+		free(buff);
 	}
-	pack_and_copy(data, len, WsTextFrame, buff, buff_len);
-	auto status = write_to_ssl(buff, buff_len);
-	free(buff);
+	else
+	{
+		status = write_to_ssl(data, len);
+	}
 	if (status == SSLSTATUS_FAIL)
 	{
 		return -1;
 	}
-	std::cout << "SslWsConnection::write, data len = " << _raw_write_buffer.readable_size() << ", ori_len: " << buff_len << std::endl;
+	std::cout << "SslWsConnection::write, data len = " << _raw_write_buffer.readable_size() << ", ori_len: " << ori_len << std::endl;
 	int ret = TcpConnection::write((const char*)_raw_write_buffer.read_ptr(), _raw_write_buffer.readable_size());
 	_raw_write_buffer.reset();
 	//int ret = TcpConnection::write(buff, buff_len);;
