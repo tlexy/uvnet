@@ -8,6 +8,7 @@
 #include <memory>
 #include <utils/ngenerator.hpp>
 #include <core/tcp_connection.h>
+#include <tls/ssl_channel.h>
 
 #include <openssl/bio.h>
 #include <openssl/err.h>
@@ -17,7 +18,7 @@
 NS_UVCORE_B
 
 
-class SslConnection : public TcpConnection
+class SslConnection : public TcpConnection, public SslChannel
 {
 public:
 	using SslCallBack = std::function<void(std::shared_ptr<SslConnection>)>;
@@ -33,24 +34,14 @@ public:
 	virtual int write(const char* data, int len);
 	virtual int writeInLoop(const char* data, int len);
 
-	void set_new_ssl_cb(SslCallBack);
+	virtual void write_socket(const char* data, int len);
 
-private:
-	//int write_socket(const char* data, int len);
-	SSLStatus write_to_ssl(const char* data, int len);
-	SSLStatus do_ssl_handshake();
-	SSLStatus get_ssl_status(int n);
+	void set_new_ssl_cb(SslCallBack);
 
 private:
 	// decode from receivce buffer
 	CircleBuffer _dec_buffer;
-	CircleBuffer _raw_write_buffer;
 	SslCallBack _ncb = nullptr;
-
-	bool _is_server = true;
-	SSL* _ssl = nullptr;
-	BIO* _read_bio = nullptr;
-	BIO* _write_bio = nullptr;
 
 };
 
