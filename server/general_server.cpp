@@ -9,7 +9,6 @@ NS_UVCORE_B
 
 GeneralServer::GeneralServer()
 	:_io_thread(std::shared_ptr<std::thread>()),
-	_dispatcher(std::shared_ptr< Dispatcher>()),
 	_timer(std::shared_ptr<Timer>())
 {
 	_loop = std::make_shared<uvcore::EventLoop>();
@@ -22,7 +21,8 @@ void GeneralServer::async_io_start(const std::string& ip, int port)
 		return;
 	}
 	/*_loop = std::make_shared<uvcore::EventLoop>();*/
-	_server = std::make_shared<uvcore::TcpServer>(_loop, ip, port);
+	//_server = std::make_shared<uvcore::TcpServer>(_loop, ip, port);
+	_server = std::make_shared<Server>(_loop, ip, port);
 
 	_server->on_newconnection([this](std::shared_ptr<uvcore::TcpConnection> ptr) {
 		ptr->set_receive_cb(std::bind(&GeneralServer::on_message_, this, std::placeholders::_1));
@@ -34,7 +34,7 @@ void GeneralServer::async_io_start(const std::string& ip, int port)
 		int ret = _server->start();
 		if (ret != 0)
 		{
-			std::cout << "[ERROR][ERROR][ERROR]server start maybe failed!!!!!!!!!!!!!!!!!!!" << __FILE__ << ": " << __FUNCTION__ << std::endl;
+			std::cerr << "[ERROR][ERROR][ERROR]server start maybe failed!!!!!!!!!!!!!!!!!!!" << __FILE__ << ": " << __FUNCTION__ << std::endl;
 		}
 	});
 }
@@ -92,10 +92,5 @@ void GeneralServer::timer_event_(Timer* timer)
 //
 //void GeneralServer::on_connection_close(std::shared_ptr<uvcore::TcpConnection>)
 //{}
-
-void GeneralServer::setDispatcher(std::shared_ptr<Dispatcher> disp)
-{
-	_dispatcher = disp;
-}
 
 NS_UVCORE_E

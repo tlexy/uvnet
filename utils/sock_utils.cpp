@@ -314,21 +314,21 @@ namespace sockets
 		return true;
 	}
 
-	uint64_t hostToNetwork64(uint64_t host64)
-	{
-		uint32_t pre = 0;
-		uint32_t suf = 0;
-		char* p = (char*)&host64;
-		memcpy(&pre, p, sizeof(uint32_t));
-		memcpy(&suf, p + sizeof(uint32_t), sizeof(uint32_t));
-		uint32_t npre = (uint32_t)htonl(pre);
-		uint32_t nsuf = (uint32_t)htonl(suf);
-		uint64_t ret = 0;
-		p = (char*)&ret;
-		memcpy(p, &nsuf, sizeof(nsuf));
-		memcpy(p + sizeof(nsuf), &npre, sizeof(npre));
-		return ret;
-	}
+	//uint64_t hostToNetwork64(uint64_t host64)
+	//{
+	//	uint32_t pre = 0;
+	//	uint32_t suf = 0;
+	//	char* p = (char*)&host64;
+	//	memcpy(&pre, p, sizeof(uint32_t));
+	//	memcpy(&suf, p + sizeof(uint32_t), sizeof(uint32_t));
+	//	uint32_t npre = (uint32_t)htonl(pre);
+	//	uint32_t nsuf = (uint32_t)htonl(suf);
+	//	uint64_t ret = 0;
+	//	p = (char*)&ret;
+	//	memcpy(p, &nsuf, sizeof(nsuf));
+	//	memcpy(p + sizeof(nsuf), &npre, sizeof(npre));
+	//	return ret;
+	//}
 
 	int SendUdpData(int fd, const char* ip_str, int port, const char* data, int len)
 	{

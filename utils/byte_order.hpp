@@ -61,10 +61,17 @@ namespace sockets
 		memcpy(&pre, &host64, sizeof(uint32_t));
 		memcpy(&suf, &host64 + sizeof(uint32_t), sizeof(uint32_t));
 		uint32_t npre = (uint32_t)htonl(pre);
-		uint32_t nsuf = (uint32_t)htonl(nsuf);
+		uint32_t nsuf = (uint32_t)htonl(suf);
 		uint64_t ret = 0;
 		memcpy(&ret, &nsuf, sizeof(nsuf));
 		memcpy(&ret + sizeof(nsuf), &npre, sizeof(npre));
+		return ret;
+	}
+
+	inline uint64_t networkToHost64(uint64_t net64)
+	{
+		uint64_t ret = 0;
+
 		return ret;
 	}
 

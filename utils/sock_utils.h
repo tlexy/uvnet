@@ -30,7 +30,7 @@ namespace sockets
 	bool isIp(const std::string& str);
 	bool isNum(const std::string& str);
 
-	uint64_t hostToNetwork64(uint64_t host64);
+	//uint64_t hostToNetwork64(uint64_t host64);
 
 	uint32_t ip2a(const char* ip);
 

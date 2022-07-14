@@ -3,9 +3,6 @@
 #include "tcp_connection.h"
 //#include "../utils/creator.hpp"
 #include "event_loop.h"
-#ifndef _WIN32
-#include <jemalloc/jemalloc.h>
-#endif
 
 
 #define ASSERT(expr)                                      \

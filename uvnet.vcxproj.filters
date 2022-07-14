@@ -11,6 +11,15 @@
     <Filter Include="utils">
       <UniqueIdentifier>{c313d31a-48ce-4e98-81f0-ed66396a6051}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tls">
+      <UniqueIdentifier>{e3fe8356-aaeb-4858-aea2-cfef9f46f926}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="httpparser">
+      <UniqueIdentifier>{7c7a5d09-6240-4568-a8e3-ecd2adae65b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="websocket">
+      <UniqueIdentifier>{8401085a-f1cb-4d8d-83f1-28157f95f587}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\async_event.cpp">
@@ -29,9 +38,6 @@
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="core\tcp_connection.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="core\tcp_server.cpp">
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="core\timer.cpp">
@@ -70,6 +76,36 @@
     <ClCompile Include="core\udp.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="tls\tls_config.cpp">
+      <Filter>tls</Filter>
+    </ClCompile>
+    <ClCompile Include="tls\ssl_connection.cpp">
+      <Filter>tls</Filter>
+    </ClCompile>
+    <ClCompile Include="tls\ssl_general_server.cpp">
+      <Filter>tls</Filter>
+    </ClCompile>
+    <ClCompile Include="websocket\ws_connection.cpp">
+      <Filter>websocket</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\endec.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="websocket\ws_general_server.cpp">
+      <Filter>websocket</Filter>
+    </ClCompile>
+    <ClCompile Include="websocket\websocket.cpp">
+      <Filter>websocket</Filter>
+    </ClCompile>
+    <ClCompile Include="tls\ssl_channel.cpp">
+      <Filter>tls</Filter>
+    </ClCompile>
+    <ClCompile Include="tls\ssl_ws_connection.cpp">
+      <Filter>tls</Filter>
+    </ClCompile>
+    <ClCompile Include="tls\sslws_general_server.cpp">
+      <Filter>tls</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\async_event.h">
@@ -88,9 +124,6 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="core\tcp_connection.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="core\tcp_server.h">
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="core\timer.h">
@@ -149,6 +182,54 @@
     </ClInclude>
     <ClInclude Include="core\udp.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="tls\tls_config.h">
+      <Filter>tls</Filter>
+    </ClInclude>
+    <ClInclude Include="tls\ssl_connection.h">
+      <Filter>tls</Filter>
+    </ClInclude>
+    <ClInclude Include="tls\ssl_general_server.h">
+      <Filter>tls</Filter>
+    </ClInclude>
+    <ClInclude Include="httpparser\httprequestparser.h">
+      <Filter>httpparser</Filter>
+    </ClInclude>
+    <ClInclude Include="httpparser\httpresponseparser.h">
+      <Filter>httpparser</Filter>
+    </ClInclude>
+    <ClInclude Include="httpparser\request.h">
+      <Filter>httpparser</Filter>
+    </ClInclude>
+    <ClInclude Include="httpparser\response.h">
+      <Filter>httpparser</Filter>
+    </ClInclude>
+    <ClInclude Include="httpparser\urlparser.h">
+      <Filter>httpparser</Filter>
+    </ClInclude>
+    <ClInclude Include="core\net_server.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="websocket\ws_connection.h">
+      <Filter>websocket</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\endec.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="websocket\ws_general_server.h">
+      <Filter>websocket</Filter>
+    </ClInclude>
+    <ClInclude Include="websocket\websocket.h">
+      <Filter>websocket</Filter>
+    </ClInclude>
+    <ClInclude Include="tls\ssl_channel.h">
+      <Filter>tls</Filter>
+    </ClInclude>
+    <ClInclude Include="tls\ssl_ws_connection.h">
+      <Filter>tls</Filter>
+    </ClInclude>
+    <ClInclude Include="tls\sslws_general_server.h">
+      <Filter>tls</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

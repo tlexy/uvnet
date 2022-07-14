@@ -161,7 +161,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>3rd\libuv-v1.44.1\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>3rd\libuv-v1.44.1\include;.;3rd\OpenSSL1_1_1g_vs2015_64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -209,7 +209,6 @@
     <ClCompile Include="core\packet_helpers.cpp" />
     <ClCompile Include="core\tcp_client.cpp" />
     <ClCompile Include="core\tcp_connection.cpp" />
-    <ClCompile Include="core\tcp_server.cpp" />
     <ClCompile Include="core\timer.cpp" />
     <ClCompile Include="core\timer_event_loop.cpp" />
     <ClCompile Include="core\udp.cpp" />
@@ -218,30 +217,52 @@
     <ClCompile Include="server\signal_control.cpp" />
     <ClCompile Include="server\thread_timer_eventloop.cpp" />
     <ClCompile Include="server\timer_helpers.cpp" />
+    <ClCompile Include="tls\sslws_general_server.cpp" />
+    <ClCompile Include="tls\ssl_channel.cpp" />
+    <ClCompile Include="tls\ssl_connection.cpp" />
+    <ClCompile Include="tls\ssl_general_server.cpp" />
+    <ClCompile Include="tls\ssl_ws_connection.cpp" />
+    <ClCompile Include="tls\tls_config.cpp" />
     <ClCompile Include="utils\circle_buffer.cpp" />
+    <ClCompile Include="utils\endec.cpp" />
     <ClCompile Include="utils\global.cpp" />
     <ClCompile Include="utils\sock_utils.cpp" />
     <ClCompile Include="utils\thread.cpp" />
+    <ClCompile Include="websocket\websocket.cpp" />
+    <ClCompile Include="websocket\ws_connection.cpp" />
+    <ClCompile Include="websocket\ws_general_server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\async_event.h" />
     <ClInclude Include="core\event_loop.h" />
     <ClInclude Include="core\ip_address.h" />
+    <ClInclude Include="core\net_server.hpp" />
     <ClInclude Include="core\packet_helpers.h" />
     <ClInclude Include="core\tcp_client.h" />
     <ClInclude Include="core\tcp_connection.h" />
-    <ClInclude Include="core\tcp_server.h" />
     <ClInclude Include="core\timer.h" />
     <ClInclude Include="core\timer_event_loop.h" />
     <ClInclude Include="core\udp.h" />
     <ClInclude Include="core\udp_server.h" />
+    <ClInclude Include="httpparser\httprequestparser.h" />
+    <ClInclude Include="httpparser\httpresponseparser.h" />
+    <ClInclude Include="httpparser\request.h" />
+    <ClInclude Include="httpparser\response.h" />
+    <ClInclude Include="httpparser\urlparser.h" />
     <ClInclude Include="server\general_server.h" />
     <ClInclude Include="server\signal_control.h" />
     <ClInclude Include="server\thread_timer_eventloop.h" />
     <ClInclude Include="server\timer_helpers.h" />
+    <ClInclude Include="tls\sslws_general_server.h" />
+    <ClInclude Include="tls\ssl_channel.h" />
+    <ClInclude Include="tls\ssl_connection.h" />
+    <ClInclude Include="tls\ssl_general_server.h" />
+    <ClInclude Include="tls\ssl_ws_connection.h" />
+    <ClInclude Include="tls\tls_config.h" />
     <ClInclude Include="utils\byte_order.hpp" />
     <ClInclude Include="utils\circle_buffer.h" />
     <ClInclude Include="utils\creator.hpp" />
+    <ClInclude Include="utils\endec.h" />
     <ClInclude Include="utils\global.h" />
     <ClInclude Include="utils\memory_alloc_helper.hpp" />
     <ClInclude Include="utils\ngenerator.hpp" />
@@ -250,6 +271,9 @@
     <ClInclude Include="utils\sock_utils.h" />
     <ClInclude Include="utils\thread.h" />
     <ClInclude Include="utils\threadqueue.hpp" />
+    <ClInclude Include="websocket\websocket.h" />
+    <ClInclude Include="websocket\ws_connection.h" />
+    <ClInclude Include="websocket\ws_general_server.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
