@@ -10,7 +10,7 @@
 #include <core/tcp_connection.h>
 #include <tls/ssl_channel.h>
 #include <string>
-#include <websocket/websocket.h>
+#include <websocket/websocket_channel.h>
 
 namespace httpparser
 {
@@ -19,7 +19,7 @@ namespace httpparser
 
 NS_UVCORE_B
 
-class SslWsConnection : public TcpConnection, public SslChannel
+class SslWsConnection : public TcpConnection, public SslChannel, public WebsocketChannel
 {
 public:
 	//using DataCallBack = std::function<void(std::shared_ptr<WsConnection>)>;
@@ -42,11 +42,23 @@ public:
 	virtual void on_receive_data(size_t len);
 
 	virtual int write(const char* data, int len);
-	//可以在任意线程中调用
+	/// <summary>
+	/// Don't call this function in TLS connection
+	/// </summary>
+	/// <param name="data"></param>
+	/// <param name="len"></param>
+	/// <returns></returns>
 	virtual int writeInLoop(const char* data, int len);
-
-	int writeInLoop(const char* data, int len, OpCode);
-	int write(const char* data, int len, OpCode);
+	/// <summary>
+	/// Don't call this function in TLS connection
+	/// </summary>
+	/// <param name="data"></param>
+	/// <param name="len"></param>
+	/// <param name=""></param>
+	/// <returns></returns>
+	virtual int writeInLoop(const char* data, int len, OpCode);
+	virtual int write(const char* data, int len, OpCode);
+	virtual void send_ws_message(const char* data, int len);
 
 	CircleBuffer* get_dec_buffer();
 	bool is_handshake();

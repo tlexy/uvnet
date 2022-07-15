@@ -174,6 +174,9 @@ bool pack_and_copy(const char* data, int len, OpCode op, void* dest, int dest_le
 		memcpy(p, &plen, sizeof(plen));
 		p += (sizeof(uint64_t));
 	}
-	memcpy(p, data, len);
+	if (len > 0)
+	{
+		memcpy(p, data, len);
+	}
 	return true;
 }

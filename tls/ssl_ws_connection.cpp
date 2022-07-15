@@ -236,33 +236,44 @@ int SslWsConnection::write(const char* data, int len, OpCode op)
 	return ret;
 }
 
+void SslWsConnection::send_ws_message(const char* data, int len)
+{
+	auto status = write_to_ssl(data, len);
+	if (status == SSLSTATUS_FAIL)
+	{
+		return;
+	}
+	int ret = TcpConnection::write((const char*)_raw_write_buffer.read_ptr(), _raw_write_buffer.readable_size());
+	_raw_write_buffer.reset();
+}
+
 int SslWsConnection::writeInLoop(const char* data, int len, OpCode op)
 {
-	if (_loop_ptr->isRunInLoopThread())
-	{
-		return write(data, len, op);
-	}
-	else
-	{
-		WriteReq* req = new WriteReq;
-		req->req.data = this;
-		int buff_len = pack_len(len);
-		char* buff = (char*)malloc(buff_len);
-		if (buff == NULL)
-		{
-			return 2;//内存分配失败
-		}
-		pack_and_copy(data, len, op, buff, buff_len);
-		auto status = write_to_ssl(buff, buff_len);
-		free(buff);
-		if (status == SSLSTATUS_FAIL)
-		{
-			return -1;
-		}
-		req->buf = uv_buf_init((char*)_raw_write_buffer.read_ptr(), _raw_write_buffer.readable_size());
-		_raw_write_buffer.reset();
-		_loop_ptr->runInLoop(std::bind(&SslWsConnection::async_write, this, req));
-	}
+	//if (_loop_ptr->isRunInLoopThread())
+	//{
+	//	return write(data, len, op);
+	//}
+	//else
+	//{
+	//	WriteReq* req = new WriteReq;
+	//	req->req.data = this;
+	//	int buff_len = pack_len(len);
+	//	char* buff = (char*)malloc(buff_len);
+	//	if (buff == NULL)
+	//	{
+	//		return 2;//内存分配失败
+	//	}
+	//	pack_and_copy(data, len, op, buff, buff_len);
+	//	auto status = write_to_ssl(buff, buff_len);
+	//	free(buff);
+	//	if (status == SSLSTATUS_FAIL)
+	//	{
+	//		return -1;
+	//	}
+	//	req->buf = uv_buf_init((char*)_raw_write_buffer.read_ptr(), _raw_write_buffer.readable_size());
+	//	_raw_write_buffer.reset();
+	//	_loop_ptr->runInLoop(std::bind(&SslWsConnection::async_write, this, req));
+	//}
 	return 0;
 }
 

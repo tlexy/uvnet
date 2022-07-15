@@ -5,7 +5,6 @@
 #include <httpparser/httprequestparser.h>
 #include <httpparser/response.h>
 #include <utils/endec.h>
-#include <websocket/websocket.h>
 #include <utils/global.h>
 
 NS_UVCORE_B
@@ -165,7 +164,7 @@ void WsConnection::handle_ws_data_frame()
 	int a = 1;
 }
 
-int WsConnection::write(const char* data, int len)
+int WsConnection::write(const char* data, int len, OpCode op)
 {
 	int buff_len = pack_len(len);
 	char* buff = (char*)malloc(buff_len);
@@ -173,14 +172,24 @@ int WsConnection::write(const char* data, int len)
 	{
 		return 2;
 	}
-	pack_and_copy(data, len, WsTextFrame, buff, buff_len);
+	pack_and_copy(data, len, op, buff, buff_len);
 
 	int ret = TcpConnection::write(buff, buff_len);;
 	free(buff);
 	return ret;
 }
 
-int WsConnection::writeInLoop(const char* data, int len)
+int WsConnection::write(const char* data, int len)
+{
+	return write(data, len, OpCode::WsTextFrame);
+}
+
+void WsConnection::send_ws_message(const char* data, int len)
+{
+	TcpConnection::write(data, len);
+}
+
+int WsConnection::writeInLoop(const char* data, int len, OpCode op)
 {
 	if (_loop_ptr->isRunInLoopThread())
 	{
@@ -196,11 +205,16 @@ int WsConnection::writeInLoop(const char* data, int len)
 		{
 			return 2;//内存分配失败
 		}
-		pack_and_copy(data, len, WsTextFrame, buff, buff_len);
+		pack_and_copy(data, len, op, buff, buff_len);
 		req->buf = uv_buf_init(const_cast<char*>(buff), static_cast<unsigned int>(buff_len));
 		_loop_ptr->runInLoop(std::bind(&WsConnection::async_write, this, req));
 	}
 	return 0;
+}
+
+int WsConnection::writeInLoop(const char* data, int len)
+{
+	return writeInLoop(data, len, WsTextFrame);
 }
 
 bool WsConnection::is_handshake()

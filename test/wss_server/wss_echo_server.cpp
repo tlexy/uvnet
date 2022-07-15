@@ -77,6 +77,8 @@ protected:
 	virtual void on_websocket_close(std::shared_ptr<uvcore::SslWsConnection> ptr, const std::string& text)
 	{
 		std::cout << "websocket close, text: " << text.c_str() << std::endl;
+		ptr->send_close();
+		ptr->del_after_write();
 	}
 
 	virtual void on_ssl_new(std::shared_ptr<uvcore::SslWsConnection>)

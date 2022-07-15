@@ -32,6 +32,13 @@ public:
 
 	virtual void on_receive_data(size_t len);
 	virtual int write(const char* data, int len);
+
+	/// <summary>
+	/// Don't call this function in TLS connection
+	/// </summary>
+	/// <param name="data"></param>
+	/// <param name="len"></param>
+	/// <returns></returns>
 	virtual int writeInLoop(const char* data, int len);
 
 	virtual void write_socket(const char* data, int len);

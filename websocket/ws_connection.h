@@ -9,6 +9,7 @@
 #include <utils/ngenerator.hpp>
 #include <core/tcp_connection.h>
 #include <string>
+#include <websocket/websocket_channel.h>
 
 namespace httpparser
 {
@@ -17,7 +18,7 @@ namespace httpparser
 
 NS_UVCORE_B
 
-class WsConnection : public TcpConnection
+class WsConnection : public TcpConnection, public WebsocketChannel
 {
 public:
 	//using DataCallBack = std::function<void(std::shared_ptr<WsConnection>)>;
@@ -39,6 +40,10 @@ public:
 	virtual int write(const char* data, int len);
 	//可以在任意线程中调用
 	virtual int writeInLoop(const char* data, int len);
+
+	virtual int writeInLoop(const char* data, int len, OpCode);
+	virtual int write(const char* data, int len, OpCode);
+	virtual void send_ws_message(const char* data, int len);
 
 	CircleBuffer* get_dec_buffer();
 	bool is_handshake();
