@@ -52,7 +52,12 @@ static int SSLVerifyCB(int preverify_ok, X509_STORE_CTX* x509_ctx)
 
 void TlsConfig::_set_verify(SSL_CTX* ssl_ctx, const char* ca_file)
 {
-    if (!ssl_ctx || !ca_file)return;
+    if (!ssl_ctx)return;
+    if (!ca_file)
+    {
+        SSL_CTX_set_verify(ssl_ctx, SSL_VERIFY_NONE, NULL);
+        return;
+    }
     //设置验证对方证书
     SSL_CTX_set_verify(ssl_ctx, SSL_VERIFY_PEER, SSLVerifyCB);
     SSL_CTX_load_verify_locations(ssl_ctx, ca_file, 0);

@@ -73,7 +73,7 @@ void SslWsConnection::on_receive_data(size_t len)
 			}
 			if (!is_handshake_finished())
 			{
-				return;
+				continue;
 			}
 			else
 			{
@@ -83,6 +83,10 @@ void SslWsConnection::on_receive_data(size_t len)
 				}
 			}
 		}
+	}
+	if (!is_handshake_finished())
+	{
+		return;
 	}
 
 	read_from_bio(get_ssl_dec_buffer());

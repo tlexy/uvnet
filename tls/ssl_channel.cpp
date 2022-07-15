@@ -12,6 +12,8 @@ SslChannel::SslChannel(bool is_server)
 	_ssl = SSL_new(TlsConfig::get_ssl_ctx());
 	_read_bio = BIO_new(BIO_s_mem());
 	_write_bio = BIO_new(BIO_s_mem());
+	SSL_set_bio(_ssl, _read_bio, _write_bio);
+
 	if (is_server)
 	{
 		SSL_set_accept_state(_ssl);
@@ -20,8 +22,7 @@ SslChannel::SslChannel(bool is_server)
 	{
 		SSL_set_connect_state(_ssl);
 	}
-
-	SSL_set_bio(_ssl, _read_bio, _write_bio);
+	SSL_set_mode(_ssl, SSL_MODE_ENABLE_PARTIAL_WRITE);
 }
 
 SslChannel::~SslChannel()
@@ -139,7 +140,9 @@ SSLStatus SslChannel::get_ssl_status(int n)
 	}
 	default:
 	{
-		std::cout << "default..." << std::endl;
+		char errbuf[256] = {'\0'};
+		const char* errstr = ERR_error_string(code, errbuf);
+		std::cout << "ssl error: " << errstr << "\terrbuf: " << errbuf << std::endl;
 		return SSLSTATUS_FAIL;
 	}
 	}
