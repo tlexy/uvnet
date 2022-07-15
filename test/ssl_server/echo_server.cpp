@@ -50,7 +50,7 @@ protected:
 		resp.headers["Connection"] = "Close";
 		resp.headers["Host"] = "wjhd.com";
 		resp.headers["Content-Type"] = "html/text";
-		resp.content = "{\"code:\", 200}";
+		resp.content = "{\"code:\" 200}";
 		resp.headers["Content-Type"] = "application/json";
 
 		std::string text = resp.inspect();
