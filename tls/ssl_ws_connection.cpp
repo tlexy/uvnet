@@ -5,7 +5,6 @@
 #include <httpparser/httprequestparser.h>
 #include <httpparser/response.h>
 #include <utils/endec.h>
-#include <websocket/websocket.h>
 #include <utils/global.h>
 
 NS_UVCORE_B
@@ -135,7 +134,7 @@ void SslWsConnection::do_ws_handshake()
 		resp.headers["Sec-WebSocket-Accept"] = val;
 
 		std::string resp_text = resp.inspect2();
-		write(resp_text.c_str(), resp_text.size(), false);
+		write(resp_text.c_str(), resp_text.size());
 
 		_is_handshake = true;
 		if (_hcb)
@@ -199,11 +198,16 @@ void SslWsConnection::handle_ws_data_frame()
 	int a = 1;
 }
 
-int SslWsConnection::write(const char* data, int len, bool is_ws)
+int SslWsConnection::write(const char* data, int len)
+{
+	return write(data, len, OpCode::WsNoWebsocket);
+}
+
+int SslWsConnection::write(const char* data, int len, OpCode op)
 {
 	int ori_len = len;
 	SSLStatus status;
-	if (is_ws)
+	if (op != OpCode::WsNoWebsocket)
 	{
 		int buff_len = pack_len(len);
 		char* buff = (char*)malloc(buff_len);
@@ -211,7 +215,7 @@ int SslWsConnection::write(const char* data, int len, bool is_ws)
 		{
 			return 2;
 		}
-		pack_and_copy(data, len, WsTextFrame, buff, buff_len);
+		pack_and_copy(data, len, op, buff, buff_len);
 		ori_len = buff_len;
 		//std::cout << "SslWsConnection::write， pre data len = " << _raw_write_buffer.readable_size() << std::endl;
 		status = write_to_ssl(buff, buff_len);
@@ -232,11 +236,11 @@ int SslWsConnection::write(const char* data, int len, bool is_ws)
 	return ret;
 }
 
-int SslWsConnection::writeInLoop(const char* data, int len)
+int SslWsConnection::writeInLoop(const char* data, int len, OpCode op)
 {
 	if (_loop_ptr->isRunInLoopThread())
 	{
-		return write(data, len);
+		return write(data, len, op);
 	}
 	else
 	{
@@ -248,7 +252,7 @@ int SslWsConnection::writeInLoop(const char* data, int len)
 		{
 			return 2;//内存分配失败
 		}
-		pack_and_copy(data, len, WsTextFrame, buff, buff_len);
+		pack_and_copy(data, len, op, buff, buff_len);
 		auto status = write_to_ssl(buff, buff_len);
 		free(buff);
 		if (status == SSLSTATUS_FAIL)
@@ -260,6 +264,11 @@ int SslWsConnection::writeInLoop(const char* data, int len)
 		_loop_ptr->runInLoop(std::bind(&SslWsConnection::async_write, this, req));
 	}
 	return 0;
+}
+
+int SslWsConnection::writeInLoop(const char* data, int len)
+{
+	return writeInLoop(data, len, OpCode::WsNoWebsocket);
 }
 
 bool SslWsConnection::is_handshake()

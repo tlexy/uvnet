@@ -5,6 +5,7 @@
 
 enum OpCode
 {
+	WsNoWebsocket = 0x0,
 	WsTextFrame = 0x01,
 	WsBinaryFrame = 0x02,
 	WsConnectionClose = 0x08,

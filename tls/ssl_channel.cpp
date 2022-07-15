@@ -114,7 +114,7 @@ SSLStatus SslChannel::do_ssl_handshake()
 SSLStatus SslChannel::get_ssl_status(int n)
 {
 	int code = SSL_get_error(_ssl, n);
-	std::cout << "SSL_get_error: " << code << std::endl;
+	//std::cout << "SSL_get_error: " << code << std::endl;
 	switch (code) {
 	case SSL_ERROR_NONE:
 		return SSLSTATUS_OK;

@@ -53,7 +53,7 @@ protected:
 		resp.headers["Content-Type"] = "application/json";*/
 
 		std::string text = recv_msg + "_resp";// resp.inspect();
-		ptr->write(text.c_str(), text.size());
+		ptr->write(text.c_str(), text.size(), WsTextFrame);
 
 		ptr->get_inner_buffer()->has_read(recv_msg.size());
 	}

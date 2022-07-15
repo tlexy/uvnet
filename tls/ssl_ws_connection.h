@@ -10,6 +10,7 @@
 #include <core/tcp_connection.h>
 #include <tls/ssl_channel.h>
 #include <string>
+#include <websocket/websocket.h>
 
 namespace httpparser
 {
@@ -40,9 +41,12 @@ public:
 
 	virtual void on_receive_data(size_t len);
 
-	virtual int write(const char* data, int len, bool is_ws = true);
+	virtual int write(const char* data, int len);
 	//可以在任意线程中调用
 	virtual int writeInLoop(const char* data, int len);
+
+	int writeInLoop(const char* data, int len, OpCode);
+	int write(const char* data, int len, OpCode);
 
 	CircleBuffer* get_dec_buffer();
 	bool is_handshake();
