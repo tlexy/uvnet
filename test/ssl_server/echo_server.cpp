@@ -108,7 +108,8 @@ int main()
 	//	cbuf.has_read(len);
 	//}
 
-	TlsConfig::init_server("server.crt", "server.key");
+	//TlsConfig::init_server("server.crt", "server.key");
+	TlsConfig::init_server("1_xlinyum.com_bundle.crt", "2_xlinyum.com.key");
 	
 	//EchoServer server;
 	serptr = std::make_shared<SslEchoServer>();

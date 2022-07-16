@@ -124,11 +124,11 @@ int main()
 	//	cbuf.has_read(len);
 	//}
 
-	TlsConfig::init_server("server.crt", "server.key");
+	TlsConfig::init_server("1_xlinyum.com_bundle.crt", "2_xlinyum.com.key");
 	//EchoServer server;
 	serptr = std::make_shared<EchoServer>();
 	serptr->start_timer(5000);
-	serptr->async_io_start("0.0.0.0", 3307);
+	serptr->async_io_start("0.0.0.0", 3308);
 	while (!gstop)
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
