@@ -40,9 +40,10 @@ link_directories(${OPENSSL_LIBRARY_DIRS})
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/objs)
 
 include_directories(/usr/local/include)
+include_directories(${CMAKE_SOURCE_DIR})
 
 SET(EXTRA_LIBS uvnet)
-SET(LIBS pthread uv )
+SET(LIBS pthread uv ssl crypto)
 
 file(GLOB SRCS "echo_server.cpp" "*.cpp")
 
