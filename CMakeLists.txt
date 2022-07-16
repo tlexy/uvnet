@@ -7,9 +7,9 @@ INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/)
 set(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11  -O0")
 
-FILE (GLOB HEADERS "./core/*.h" "./server/*.h" "./utils/*.h" "utils/*.hpp")
+FILE (GLOB HEADERS "./core/*.h" "./server/*.h" "./utils/*.h" "utils/*.hpp" "websocket/*.h", "tls/*.h")
 
-FILE (GLOB SRCS "./core/*.cpp" "./server/*.cpp" "./utils/*.cpp")
+FILE (GLOB SRCS "./core/*.cpp" "./server/*.cpp" "./utils/*.cpp" "websocket/*.h", "tls/*.h")
 
 
 #set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "../../libs")

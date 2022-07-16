@@ -30,6 +30,13 @@ endif()
 include_directories(${LIBUV_INCLUDE_DIRS})
 link_directories(${LIBUV_LIBRARY_DIRS})
 
+pkg_search_module(OPENSSL REQUIRED openssl)
+if(NOT OPENSSL_FOUND)
+    message(FATAL_ERROR "openssl not found")
+endif()
+include_directories(${OPENSSL_INCLUDE_DIRS})
+link_directories(${OPENSSL_LIBRARY_DIRS})
+
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/objs)
 
 include_directories(/usr/local/include)

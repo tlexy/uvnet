@@ -1,7 +1,4 @@
-﻿#ifndef _WIN32
-#include <jemalloc/jemalloc.h>
-#endif
-#include "circle_buffer.h"
+﻿#include "circle_buffer.h"
 #include <stdlib.h>
 #include "global.h"
 #include<algorithm>

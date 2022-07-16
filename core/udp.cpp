@@ -3,9 +3,6 @@
 #include "event_loop.h"
 #include <iostream>
 #include <string.h>
-#ifndef _WIN32
-#include <jemalloc/jemalloc.h>
-#endif
 
 NS_UVCORE_B
 
