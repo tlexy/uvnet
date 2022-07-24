@@ -32,6 +32,7 @@ public:
 	int addressLength();
 	int family() { return _addr.addr_ip4.sin_family; }
 	static IpAddress fromRawSocketAddress(sockaddr*, socklen_t);
+	void parse();
 	void set_valid(bool valid = true);
 	std::string getIp();
 	int getPort();
@@ -51,7 +52,7 @@ private:
 	std::string _doname;
 	std::string _ip_str;
 	char _ipbuf[16];
-	int _port;
+	int _port{-1};
 };
 
 NS_UVCORE_E

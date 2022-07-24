@@ -54,17 +54,35 @@ std::string IpAddress::toString(bool withPort) const
 	{
 		return std::string();
 	}
-	char buf[IPV4_LEN];
-	memset(buf, 0x0, sizeof(buf));
-	inet_ntop(AF_INET, (void*)&_addr.addr_ip4.sin_addr.s_addr, (char*)&buf, IPV4_LEN);
-	std::string ip((const char*)&buf);	
+	/*if (_ip_str.size() < 1)
+	{
+		char buf[IPV4_LEN];
+		memset(buf, 0x0, sizeof(buf));
+		inet_ntop(AF_INET, (void*)&_addr.addr_ip4.sin_addr.s_addr, (char*)&buf, IPV4_LEN);
+		_ip_str = std::string((const char*)&buf);
+	}*/
+	std::string ip = _ip_str;
 	if (withPort)
 	{
+		//if (_port < 0)
+		//{
+		//	_port = ntohs(_addr.addr_ip4.sin_port);
+		//}
 		ip.append(":");
-		ip.append(std::to_string(ntohs(_addr.addr_ip4.sin_port)));
+		ip.append(std::to_string(_port));
 	}
 
 	return ip;
+}
+
+void IpAddress::parse()
+{
+	char buf[IPV4_LEN];
+	memset(buf, 0x0, sizeof(buf));
+	inet_ntop(AF_INET, (void*)&_addr.addr_ip4.sin_addr.s_addr, (char*)&buf, IPV4_LEN);
+	_ip_str = std::string((const char*)&buf);
+
+	_port = ntohs(_addr.addr_ip4.sin_port);
 }
 
 std::string IpAddress::getIp()
@@ -114,6 +132,7 @@ IpAddress IpAddress::fromRawSocketAddress(sockaddr* sa, socklen_t len)
 	IpAddress ip;
 	memcpy(ip.rawAddressPtr(), sa, len);
 	ip.set_valid();
+	ip.parse();
 	return ip;
 }
 
