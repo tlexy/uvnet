@@ -1,5 +1,7 @@
 ﻿#include <websocket/websocket.h>
 #include <utils/byte_order.hpp>
+#include <string.h>
+#include <stdlib.h>
 
 ws_t* unpack(const char* src, int len)
 {
