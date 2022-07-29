@@ -75,7 +75,7 @@ void WsConnection::do_handshake()
 	if (res == HttpRequestParser::ParsingCompleted)
 	{
 		get_inner_buffer()->has_read(len);
-		std::cout << request->inspect() << std::endl;
+		//std::cout << request->inspect() << std::endl;
 		if (request->versionMajor != 1
 			|| request->method != "GET"
 			|| get_version(request) != 13
