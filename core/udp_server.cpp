@@ -10,6 +10,14 @@ UdpServer::UdpServer(std::shared_ptr<EventLoop> loop)
 Udp* UdpServer::addBind(IpAddress& ip, Udp::UdpReceiveCallback2 cb)
 {
 	Udp* udp = new Udp();
+	if (!udp)
+	{
+		if (cb)
+		{
+			cb(nullptr, nullptr);
+		}
+		return nullptr;
+	}
 	int ret = 0;
 	if (_loop->isRunInLoopThread())
 	{
@@ -19,13 +27,26 @@ Udp* UdpServer::addBind(IpAddress& ip, Udp::UdpReceiveCallback2 cb)
 	{
 		_loop->runInLoop(std::bind(&UdpServer::do_bind, this, udp, ip, cb));
 	}
-	return udp;
+	if (ret == 0)
+	{
+		return udp;
+	}
+	return nullptr;
 }
 
 Udp* UdpServer::addPreBind(IpAddress& ip, Udp::UdpReceiveCallback2 cb)
 {
 	Udp* udp = new Udp();
-	do_bind(udp, ip, cb);
+	if (!udp)
+	{
+		return nullptr;
+	}
+	int ret = do_bind(udp, ip, cb);
+	if (ret != 0)
+	{
+		delete udp;
+		return nullptr;
+	}
 	return udp;
 }
 
