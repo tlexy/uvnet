@@ -49,7 +49,7 @@ public:
 	//为发送socket绑定一个地址，否则将随机分配
 	void bindSend(const IpAddress&);
 	//void bindAndRecv(const IpAddress&, UdpReceiveCallback cb);
-	void bindAndRecv2(const IpAddress&, UdpReceiveCallback2 cb);
+	int bindAndRecv2(const IpAddress&, UdpReceiveCallback2 cb);
 
 	void sendInLoop(const char* data, int len, IpAddress& ip);
 	void send(const char* data, int len, IpAddress& ip);

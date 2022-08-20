@@ -10,9 +10,10 @@ UdpServer::UdpServer(std::shared_ptr<EventLoop> loop)
 Udp* UdpServer::addBind(IpAddress& ip, Udp::UdpReceiveCallback2 cb)
 {
 	Udp* udp = new Udp();
+	int ret = 0;
 	if (_loop->isRunInLoopThread())
 	{
-		do_bind(udp, ip, cb);
+		ret = do_bind(udp, ip, cb);
 	}
 	else
 	{
@@ -28,10 +29,16 @@ Udp* UdpServer::addPreBind(IpAddress& ip, Udp::UdpReceiveCallback2 cb)
 	return udp;
 }
 
-void UdpServer::do_bind(Udp* udp, IpAddress& ip, Udp::UdpReceiveCallback2 cb)
+int UdpServer::do_bind(Udp* udp, IpAddress& ip, Udp::UdpReceiveCallback2 cb)
 {
 	udp->setLoop(_loop.get());
-	udp->bindAndRecv2(ip, cb);
+	int ret = udp->bindAndRecv2(ip, cb);
+	//绑定失败时，调用回调函数，地址传为空
+	if (ret != 0 && cb)
+	{
+		cb(udp, nullptr);
+	}
+	return ret;
 }
 
 //Udp* UdpServer::addBind(IpAddress&, Udp::UdpReceiveCallback cb)

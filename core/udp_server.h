@@ -23,7 +23,8 @@ public:
 	//Udp* addBind(IpAddress&, Udp::UdpReceiveCallback cb);
 
 private:
-	void do_bind(Udp*, IpAddress&, Udp::UdpReceiveCallback2 cb);
+	//绑定可能会失败，失败之后，回调函数会立刻调用，并传回一个空地址指针
+	int do_bind(Udp*, IpAddress&, Udp::UdpReceiveCallback2 cb);
 
 private:
 	std::shared_ptr<EventLoop> _loop;
