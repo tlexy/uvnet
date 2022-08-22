@@ -43,6 +43,7 @@ public:
 	void onCompleted(int);
 
 	void setLoop(EventLoop*);
+	EventLoop* getLoop() const;
 
 	int get_bind_port();
 
@@ -70,7 +71,7 @@ private:
 
 private:
 	int64_t _id;
-	EventLoop* _loop;
+	EventLoop* _loop{NULL};
 	uv_udp_t* _send_udp{NULL};
 	uv_udp_t* _recv_udp{NULL};
 	IpAddress _bind_addr;

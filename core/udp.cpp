@@ -91,6 +91,11 @@ void Udp::setLoop(EventLoop* loop)
 	uv_udp_init(loop->uv_loop(), _recv_udp);
 }
 
+EventLoop* Udp::getLoop() const
+{
+	return _loop;
+}
+
 int Udp::get_bind_port()
 {
 	return _bind_addr.getPort();
