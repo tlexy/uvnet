@@ -91,6 +91,11 @@ void Udp::setLoop(EventLoop* loop)
 	uv_udp_init(loop->uv_loop(), _recv_udp);
 }
 
+EventLoop* Udp::getLoop() const
+{
+	return _loop;
+}
+
 int Udp::get_bind_port()
 {
 	return _bind_addr.getPort();
@@ -112,13 +117,18 @@ void Udp::bindSend(const IpAddress& ip)
 //	uv_udp_recv_start(_recv_udp, &uv_alloc, &on_data_receive);
 //}
 
-void Udp::bindAndRecv2(const IpAddress& ip, UdpReceiveCallback2 cb)
+int Udp::bindAndRecv2(const IpAddress& ip, UdpReceiveCallback2 cb)
 {
 	_bind_addr = ip;
 	_recv_cb2 = cb;
-	uv_udp_bind(_recv_udp, (const struct sockaddr*)ip.rawAddressPtr(), UV_UDP_REUSEADDR);
+	int ret = uv_udp_bind(_recv_udp, (const struct sockaddr*)ip.rawAddressPtr(), UV_UDP_REUSEADDR);
+	if (ret != 0)
+	{
+		return ret;
+	}
 	_recv_udp->data = this;
 	uv_udp_recv_start(_recv_udp, &uv_alloc, &on_data_receive);
+	return ret;
 }
 
 //void Udp::onReceiveData(IpAddress& ip)

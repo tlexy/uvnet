@@ -43,13 +43,14 @@ public:
 	void onCompleted(int);
 
 	void setLoop(EventLoop*);
+	EventLoop* getLoop() const;
 
 	int get_bind_port();
 
 	//为发送socket绑定一个地址，否则将随机分配
 	void bindSend(const IpAddress&);
 	//void bindAndRecv(const IpAddress&, UdpReceiveCallback cb);
-	void bindAndRecv2(const IpAddress&, UdpReceiveCallback2 cb);
+	int bindAndRecv2(const IpAddress&, UdpReceiveCallback2 cb);
 
 	void sendInLoop(const char* data, int len, IpAddress& ip);
 	void send(const char* data, int len, IpAddress& ip);
@@ -70,7 +71,7 @@ private:
 
 private:
 	int64_t _id;
-	EventLoop* _loop;
+	EventLoop* _loop{NULL};
 	uv_udp_t* _send_udp{NULL};
 	uv_udp_t* _recv_udp{NULL};
 	IpAddress _bind_addr;
