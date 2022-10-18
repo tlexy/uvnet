@@ -5,6 +5,7 @@
 #include <iostream>
 #include <utils/byte_order.hpp>
 #include <tls/tls_config.h>
+#include <string.h>
 
 NS_UVCORE_B
 
